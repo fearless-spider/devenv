@@ -31,6 +31,6 @@ Contributions, issues and feature requests are welcome! See [CONTRIBUTING.md](CO
 
 Give a ⭐️ if this project helped you!
 
-## License
+## 📝 License
 
 The [BSD 3-Clause "New" or "Revised" License](LICENSE)
