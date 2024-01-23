@@ -1,16 +1,24 @@
 # devenv
 
-A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to install development tools, libraries,.. on arch, macosx, fedora and ubuntu
+A glamorous shell scripts to install development tools, libraries,.. on arch, macosx, fedora and ubuntu
 
 ## 🚀 Features
 
-- Rust
-- Java
-- Python
-- Go
-- Lua
-- JavaScript
-- NeoVim
+* Git
+* Rust
+* Java
+* Python
+* Go
+* Lua
+* JavaScript
+* Ruby
+* Erlang
+* Elixir
+* Haskell
+* Perl
+* PostgreSQL
+* SQLite
+* NeoVim
 
 ## 📖 Usage
 
