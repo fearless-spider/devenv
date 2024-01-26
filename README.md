@@ -28,7 +28,6 @@ sh devenv.sh
 
 ## :seedling: TODO
 
-- add gum
 - update fedora and ubuntu section
 
 ## 🤝 Contributing
