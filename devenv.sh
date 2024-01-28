@@ -11,7 +11,7 @@ fi
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
-	if [[ "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
+	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
 		sudo pacman -Syy
 		sudo pacman -Su
 		sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
