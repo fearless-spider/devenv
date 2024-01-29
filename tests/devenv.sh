@@ -13,8 +13,12 @@ if [ "$platform" = "linux" ]; then
 	echo "Determined platform: $distro"
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
 		sudo pacman -Syy
-		sudo pacman -Su
-		sudo pacman -S base-devel git curl nodejs python erlang elixir ruby rust lua go \
+		sudo pacman -Su --noconfirm
+		sudo pacman -S --noconfirm base-devel git curl
+		cd ~/
+		git clone https://aur.archlinux.org/yay.git
+		cd yay && makepkg -si --noconfirm
+		sudo pacman -S python erlang elixir ruby rust lua go nodejs \
 			typescript ghc perl shellcheck ripgrep fd lazygit ncdu \
 			postgresql github-cli sqlite openssl readline xz zlib gum \
 			rust-analyzer iniparser fftw ncurses base-devel espeak-ng prettier \
