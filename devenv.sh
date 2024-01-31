@@ -14,13 +14,12 @@ if [ "$platform" = "linux" ]; then
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
 		sudo pacman -Syy
 		sudo pacman -Su
-		sudo pacman -S base-devel git curl nodejs python erlang elixir ruby rust lua go \
-			typescript ghc perl shellcheck ripgrep fd lazygit ncdu \
-			postgresql github-cli sqlite openssl readline xz zlib gum \
-			rust-analyzer iniparser fftw ncurses base-devel espeak-ng prettier \
-			luarocks libtool automake portaudio astyle shfmt cppcheck \
+		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
+		sudo pacman -S python python-pip erlang elixir ruby rust lua go \
+			ghc perl postgresql sqlite rust-analyzer iniparser fftw ncurses espeak-ng prettier \
+			luarocks portaudio astyle shfmt cppcheck \
 			lua-language-server bash-language-server haskell-language-server gopls \
-			gradle tmux python-pip npm
+			shellcheck ripgrep fd lazygit ncdu gradle tmux nodejs npm typescript github-cli gum
 		yay -S nvm checkmake rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls \
 			r-rlang
 	elif [ "$distro" = "Ubuntu Linux" ]; then
@@ -38,7 +37,7 @@ if [ "$platform" = "linux" ]; then
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
 	brew update && brew upgrade
-	brew install git curl node python erlang elixir ruby rust lua go \
+	brew install git curl python erlang elixir ruby rust lua go node \
 		typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
 		nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
 		xz zlib rbenv gum rust-analyzer fftw ncurses libtool automake \
