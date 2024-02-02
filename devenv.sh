@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on arch, macosx, fedora and ubuntu"
 
 platform='unknown'
 unamestr=$(uname)
@@ -8,6 +10,10 @@ elif [ "$unamestr" = 'Darwin' ]; then
 	platform='darwin'
 fi
 
+read -p "What programming language do you need(separated by a space)? " p_language
+
+read -p "What database do you need(separated by a space)? " database
+
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
@@ -15,13 +21,52 @@ if [ "$platform" = "linux" ]; then
 		sudo pacman -Syy
 		sudo pacman -Su
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
-		sudo pacman -S python python-pip erlang elixir ruby rust lua go \
-			ghc perl postgresql sqlite rust-analyzer iniparser fftw ncurses espeak-ng prettier \
-			luarocks portaudio astyle shfmt cppcheck \
-			lua-language-server bash-language-server haskell-language-server gopls \
-			shellcheck ripgrep fd lazygit ncdu gradle tmux nodejs npm typescript github-cli gum
-		yay -S nvm checkmake rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls \
-			r-rlang
+		if [[ "$p_language" = *"python"* ]]; then
+			sudo pacman -S python python-pip
+		fi
+		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* ]]; then
+			sudo pacman -S erlang elixir
+			yay -S rebar3 elixir-ls
+		fi
+		if [[ "$p_language" = *"ruby"* ]]; then
+			sudo pacman -S ruby
+			yay -S rbenv
+		fi
+		if [[ "$p_language" = *"rust"* ]]; then
+			sudo pacman -S rust rust-analyzer
+		fi
+		if [[ "$p_language" = *"go"* ]]; then
+			sudo pacman -S go gopls
+		fi
+		if [[ "$p_language" = *"lua"* ]]; then
+			sudo pacman -S lua luarocks lua-language-server
+		fi
+		if [[ "$p_language" = *"r-lang"* ]]; then
+			yay -S r-rlang
+		fi
+		if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* ]]; then
+			sudo pacman -S nodejs npm prettier
+			yay -S nvm
+		fi
+		if [[ "$p_language" = *"typescript"* ]]; then
+			sudo pacman -S typescript
+		fi
+		if [[ "$p_language" = *"haskell"* ]]; then
+			sudo pacman -S ghc haskell-language-server
+		fi
+		if [[ "$p_language" = *"perl"* ]]; then
+			sudo pacman -S perl perl-perl-languageserver
+		fi
+		if [[ "$database" = *"postgresql"* ]]; then
+			sudo pacman -S postgresql
+		fi
+		if [[ "$database" = *"sqlite"* ]]; then
+			sudo pacman -S sqlite
+		fi
+		sudo pacman -S iniparser fftw ncurses espeak-ng \
+			portaudio astyle shfmt cppcheck bash-language-server \
+			shellcheck ripgrep fd lazygit ncdu gradle tmux github-cli gum
+		yay -S checkmake hadolint cava tetris-terminal-git
 	elif [ "$distro" = "Ubuntu Linux" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
