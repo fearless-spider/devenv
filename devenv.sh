@@ -63,9 +63,12 @@ if [ "$platform" = "linux" ]; then
 		if [[ "$database" = *"sqlite"* ]]; then
 			sudo pacman -S sqlite
 		fi
+		if [[ "$database" = *"java"* ]]; then
+			sudo pacman -S jdk-openjdk gradle
+		fi
 		sudo pacman -S iniparser fftw ncurses espeak-ng \
 			portaudio astyle shfmt cppcheck bash-language-server \
-			shellcheck ripgrep fd lazygit ncdu gradle tmux github-cli gum
+			shellcheck ripgrep fd lazygit ncdu tmux github-cli gum
 		yay -S checkmake hadolint cava tetris-terminal-git
 	elif [ "$distro" = "Ubuntu Linux" ]; then
 		sudo apt-get update
@@ -96,12 +99,20 @@ elif [ "$platform" = "darwin" ]; then
 	ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
-sudo gem update
-sudo gem install solargraph rubocop neovim tmuxinator
+if [[ "$p_language" = *"ruby"* ]]; then
+	sudo gem update
+	sudo gem install solargraph rubocop neovim tmuxinator
+fi
 
-curl https://pyenv.run | bash
+if [[ "$p_language" = *"python"* ]]; then
+	curl https://pyenv.run | bash
+	pip install -U pip
+	pip install flake8 black isort cmake-language-server djlint pynvim
+fi
 
-sudo luarocks install luacheck
+if [[ "$p_language" = *"lua"* ]]; then
+	sudo luarocks install luacheck
+fi
 
 cargo install selene stylua efmt bliss
 
@@ -115,17 +126,17 @@ sudo gitflow-toolkit install
 
 gh extension install dlvhdr/gh-dash
 
-pip install -U pip
-pip install flake8 black isort cmake-language-server djlint pynvim
+if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* ]]; then
+	npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
+		fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
+		sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
+		neovim gulp
+fi
 
-npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
-	fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
-	sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
-	neovim gulp
-
-curl -s "https://get.sdkman.io" | bash
-
-sdk install gradle
+if [[ "$p_language" = *"java"* ]]; then
+	curl -s "https://get.sdkman.io" | bash
+	sdk install gradle
+fi
 
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
