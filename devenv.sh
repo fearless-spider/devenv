@@ -21,51 +21,66 @@ if [ "$platform" = "linux" ]; then
 		sudo pacman -Syy
 		sudo pacman -Su
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
+
 		if [[ "$p_language" = *"python"* ]]; then
 			sudo pacman -S python python-pip
 		fi
+
 		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* ]]; then
 			sudo pacman -S erlang elixir
 			yay -S rebar3 elixir-ls
 		fi
+
 		if [[ "$p_language" = *"ruby"* ]]; then
 			sudo pacman -S ruby
 			yay -S rbenv
 		fi
+
 		if [[ "$p_language" = *"rust"* ]]; then
 			sudo pacman -S rust rust-analyzer
 		fi
+
 		if [[ "$p_language" = *"go"* ]]; then
 			sudo pacman -S go gopls
 		fi
+
 		if [[ "$p_language" = *"lua"* ]]; then
 			sudo pacman -S lua luarocks lua-language-server
 		fi
+
 		if [[ "$p_language" = *"r-lang"* ]]; then
 			yay -S r-rlang
 		fi
+
 		if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* ]]; then
 			sudo pacman -S nodejs npm prettier
 			yay -S nvm
 		fi
+
 		if [[ "$p_language" = *"typescript"* ]]; then
 			sudo pacman -S typescript
 		fi
+
 		if [[ "$p_language" = *"haskell"* ]]; then
 			sudo pacman -S ghc haskell-language-server
 		fi
+
 		if [[ "$p_language" = *"perl"* ]]; then
 			sudo pacman -S perl perl-perl-languageserver
 		fi
+
+		if [[ "$p_language" = *"java"* ]]; then
+			sudo pacman -S jdk-openjdk gradle
+		fi
+
 		if [[ "$database" = *"postgresql"* ]]; then
 			sudo pacman -S postgresql
 		fi
+
 		if [[ "$database" = *"sqlite"* ]]; then
 			sudo pacman -S sqlite
 		fi
-		if [[ "$database" = *"java"* ]]; then
-			sudo pacman -S jdk-openjdk gradle
-		fi
+
 		sudo pacman -S iniparser fftw ncurses espeak-ng \
 			portaudio astyle shfmt cppcheck bash-language-server \
 			shellcheck ripgrep fd lazygit ncdu tmux github-cli gum
@@ -73,14 +88,64 @@ if [ "$platform" = "linux" ]; then
 	elif [ "$distro" = "Ubuntu Linux" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
-		sudo apt-get install git curl gum rust-analyzer libfftw3-dev \
-			libasound2-dev libncursesw5-dev libpulse-dev libtool automake \
-			cava espeak-ng gradle
+		sudo apt-get install build-essential git curl libfftw3-dev \
+			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
+
+		if [[ "$p_language" = *"rust"* ]]; then
+			curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+			sudo apt-get install rust-analyzer
+		fi
+
+		if [[ "$p_language" = *"ruby"* ]]; then
+			sudo apt-get install ruby-full
+		fi
+
+		if [[ "$p_language" = *"java"* ]]; then
+			sudo apt-get install default-jdk gradle
+		fi
+		sudo apt-get install gum cava espeak-ng
 	elif [ "$distro" = "Fedora Linux" ]; then
 		sudo yum update
-		sudo yum install git curl gcc-c++ erlang elixir java python-pip go cargo nodejs luarocks rust rust-analyzer \
-			libtool automake cava espeak-ng gh rebar ruby-devel rubygems qemu-kvm bridge-utils libvirt virt-install \
-			zlib.i686 ncurses-libs.i686 bzip2-libs.i686 postgresql
+		sudo yum groupinstall "Development Tools"
+		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686
+
+		if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* ]]; then
+			sudo yum install erlang elixir rebar
+		fi
+
+		if [[ "$p_language" = *"java"* ]]; then
+			sudo yum install java
+		fi
+
+		if [[ "$p_language" = *"python"* ]]; then
+			sudo yum install python-pip
+		fi
+
+		if [[ "$p_language" = *"go"* ]]; then
+			sudo yum install go
+		fi
+
+		if [[ "$p_language" = *"rust"* ]]; then
+			sudo yum install rust rust-analyzer cargo
+		fi
+
+		if [[ "$p_language" = *"javascript"* ]]; then
+			sudo yum install nodejs
+		fi
+
+		if [[ "$p_language" = *"lua"* ]]; then
+			sudo yum install lua luarocks
+		fi
+
+		if [[ "$p_language" = *"ruby"* ]]; then
+			sudo yum install ruby ruby-devel rubygems
+		fi
+
+		if [[ "$database" = *"postgresql"* ]]; then
+			sudo yum install postgresql
+		fi
+
+		sudo yum install cava espeak-ng gh qemu-kvm bridge-utils libvirt virt-install ncurses-libs.i686
 	fi
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
@@ -114,15 +179,19 @@ if [[ "$p_language" = *"lua"* ]]; then
 	sudo luarocks install luacheck
 fi
 
-cargo install selene stylua efmt bliss
+if [[ "$p_language" = *"rust"* ]]; then
+	cargo install selene stylua efmt bliss
+fi
 
-go install mvdan.cc/sh/v3/cmd/shfmt@latest
-go install github.com/maaslalani/nap@main
-go install github.com/DyegoCosta/snake-game@latest
-go install github.com/maaslalani/typer@latest
-go install github.com/mritd/gitflow-toolkit/v2@latest
+if [[ "$p_language" = *"go"* ]]; then
+	go install mvdan.cc/sh/v3/cmd/shfmt@latest
+	go install github.com/maaslalani/nap@main
+	go install github.com/DyegoCosta/snake-game@latest
+	go install github.com/maaslalani/typer@latest
+	go install github.com/mritd/gitflow-toolkit/v2@latest
 
-sudo gitflow-toolkit install
+	sudo gitflow-toolkit install
+fi
 
 gh extension install dlvhdr/gh-dash
 
