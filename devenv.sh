@@ -150,14 +150,65 @@ if [ "$platform" = "linux" ]; then
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
 	brew update && brew upgrade
-	brew install git curl python erlang elixir ruby rust lua go node \
-		typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
-		nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
-		xz zlib rbenv gum rust-analyzer fftw ncurses libtool automake \
-		portaudio cava astyle shfmt cppcheck gitlint golangci-lint \
-		lua-language-server elixir-ls samtay/tui/tetris espeak autoconf-archive \
-		circumflex clang-format bash-language-server haskell-language-server \
-		efm-langserver gopls gradle
+	brew install git curl libtool automake openssl readline xz zlib autoconf-archive
+
+	if [[ "$p_language" = *"python"* ]]; then
+		brew install python
+	fi
+
+	if [[ "$p_language" = *"ruby"* ]]; then
+		brew install ruby rbenv
+	fi
+
+	if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* ]]; then
+		brew install erlang elixir rebar3 elixir-ls
+	fi
+
+	if [[ "$p_language" = *"rust"* ]]; then
+		brew install rust rust-analyzer
+	fi
+
+	if [[ "$p_language" = *"lua"* ]]; then
+		brew install lua lua-language-server
+	fi
+
+	if [[ "$p_language" = *"go"* ]]; then
+		brew install go
+	fi
+
+	if [[ "$p_language" = *"javascript"* || "$p_language" = *"javascript"* ]]; then
+		brew install node nvm typescript
+	fi
+
+	if [[ "$p_language" = *"go"* ]]; then
+		brew install go gopls golangci-lint
+	fi
+
+	if [[ "$p_language" = *"haskell"* ]]; then
+		brew install ghc haskell-language-server
+	fi
+
+	if [[ "$p_language" = *"perl"* ]]; then
+		brew install perl
+	fi
+
+	if [[ "$database" = *"postgresql"* ]]; then
+		brew install postgresql
+	fi
+
+	if [[ "$database" = *"sqlite"* ]]; then
+		brew install sqlite3
+	fi
+
+	if [[ "$p_language" = *"java"* ]]; then
+		brew install gradle
+	fi
+
+	brew install shellcheck ripgrep fd lazygit ncdu \
+		hadolint checkmake gh gum fftw ncurses \
+		portaudio cava astyle shfmt cppcheck gitlint \
+		espeak circumflex clang-format bash-language-server \
+		efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
 	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
