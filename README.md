@@ -11,6 +11,7 @@ A glamorous shell scripts to install development tools, libraries,.. on arch, ma
 * Go
 * Lua
 * JavaScript
+* TypeScript
 * Ruby
 * Erlang
 * Elixir
@@ -19,6 +20,7 @@ A glamorous shell scripts to install development tools, libraries,.. on arch, ma
 * PostgreSQL
 * SQLite
 * NeoVim
+* LSP
 
 ## 📖 Usage
 
