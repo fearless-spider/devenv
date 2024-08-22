@@ -5,7 +5,7 @@ echo "DEVENV.sh - A glamorous shell scripts to install development tools, librar
 platform='unknown'
 unamestr=$(uname)
 if [ "$unamestr" = 'Linux' ]; then
-	platform='linux'
+platform='linux'
 elif [ "$unamestr" = 'Darwin' ]; then
 	platform='darwin'
 fi
@@ -81,6 +81,10 @@ if [ "$platform" = "linux" ]; then
 			sudo pacman -S sqlite
 		fi
 
+		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
+			yay -S mongodb-bin mongodb-tools-bin mongosh-bin
+		fi
+
 		sudo pacman -S iniparser fftw ncurses espeak-ng \
 			portaudio astyle shfmt cppcheck bash-language-server \
 			shellcheck ripgrep fd lazygit ncdu tmux github-cli gum
@@ -102,6 +106,14 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
 			sudo apt-get install default-jdk gradle
+		fi
+
+		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
+			curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
+   		sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+			echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+			sudo apt-get update
+			sudo apt-get install -y mongodb-org
 		fi
 		sudo apt-get install gum cava espeak-ng
 	elif [ "$distro" = "Fedora Linux" ]; then
@@ -198,6 +210,11 @@ elif [ "$platform" = "darwin" ]; then
 
 	if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
 		brew install sqlite3
+	fi
+
+	if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
+		brew tap mongodb/brew
+		brew install mongodb/brew/mongodb-community
 	fi
 
 	if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then

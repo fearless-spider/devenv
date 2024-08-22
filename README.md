@@ -19,6 +19,7 @@ A glamorous shell scripts to install development tools, libraries,.. on arch, ma
 * Perl
 * PostgreSQL
 * SQLite
+* MongoDB
 * NeoVim
 * LSP
 
