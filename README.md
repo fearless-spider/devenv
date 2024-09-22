@@ -2,6 +2,13 @@
 
 A glamorous shell scripts to install development tools, libraries,.. on arch, macosx, fedora and ubuntu
 
+## Operating System
+
+* Arch Linux
+* Fedora Linux
+* Ubuntu Linux
+* MacOSX
+
 ## 🚀 Features
 
 * Git
@@ -33,7 +40,7 @@ sh devenv.sh
 
 ## :seedling: TODO
 
-- update fedora and ubuntu section
+- update ubuntu section
 
 ## 🤝 Contributing
 
