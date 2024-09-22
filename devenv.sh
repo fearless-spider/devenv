@@ -121,40 +121,67 @@ if [ "$platform" = "linux" ]; then
 		sudo yum groupinstall "Development Tools"
 		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686
 
-		if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
-			sudo yum install erlang elixir rebar
-		fi
-
-		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-			sudo yum install java
-		fi
-
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 			sudo yum install python-pip
 		fi
 
-		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-			sudo yum install go
+		if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
+			sudo yum install erlang elixir rebar
+		fi
+
+		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
+			sudo yum install libyaml-devel ruby ruby-devel rubygems
 		fi
 
 		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
 			sudo yum install rust rust-analyzer cargo
 		fi
 
-		if [[ "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
-			sudo yum install nodejs
+		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
+			sudo yum install go
 		fi
 
 		if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
 			sudo yum install lua luarocks
 		fi
 
-		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-			sudo yum install ruby ruby-devel rubygems
+		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
+			sudo yum install R-rlang
+		fi
+
+		if [[ "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
+			sudo yum install nodejs npm
+			sudo npm install -g nvm prettier
+		fi
+
+		if [[ "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
+			sudo yum install typescript
+		fi
+
+		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
+			sudo dnf copr enable petersen/haskell-language-server
+			sudo yum install ghc-compiler haskell-language-server
+		fi
+
+		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
+			sudo yum install perl
+			sudo cpan Perl::LanguageServer
+		fi
+
+		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
+			sudo yum install java
 		fi
 
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
 			sudo yum install postgresql
+		fi
+
+		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
+			sudo yum install sqlite
+		fi
+
+		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
+			echo "Not supported"
 		fi
 
 		sudo yum install cava espeak-ng gh qemu-kvm bridge-utils libvirt virt-install ncurses-libs.i686
