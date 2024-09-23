@@ -40,9 +40,9 @@ sh devenv.sh
 
 ## :seedling: TODO
 
-- update ubuntu section
-- add C/C++
-- add PHP
+- update Ubuntu section
+- C/C++
+- PHP
 - MariaDB
 - Julia
 - Redis
