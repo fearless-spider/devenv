@@ -41,6 +41,11 @@ sh devenv.sh
 ## :seedling: TODO
 
 - update ubuntu section
+- add C/C++
+- add PHP
+- MariaDB
+- Julia
+- Redis
 
 ## 🤝 Contributing
 
