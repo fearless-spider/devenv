@@ -89,23 +89,71 @@ if [ "$platform" = "linux" ]; then
 			portaudio astyle shfmt cppcheck bash-language-server \
 			shellcheck ripgrep fd lazygit ncdu tmux github-cli gum
 		yay -S checkmake hadolint cava tetris-terminal-git
-	elif [ "$distro" = "Ubuntu Linux" ]; then
+	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
-		sudo apt-get install build-essential git curl libfftw3-dev \
+		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
+			libreadline-dev libedit-dev libssl-dev \
 			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
 
-		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-			curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-			sudo apt-get install rust-analyzer
+		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
+			sudo apt-get install python3-full python3-pip
+		fi
+
+		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
+			sudo apt-get install erlang elixir rebar3 # elixir-ls
 		fi
 
 		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
 			sudo apt-get install ruby-full
 		fi
 
+		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
+			curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+			sudo apt-get install rust-analyzer
+		fi
+
+		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
+			sudo apt-get install golang-go gopls
+		fi
+
+		if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
+			sudo apt-get install lua5.4 luarocks # lua-language-server
+		fi
+
+		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
+			sudo apt-get install r-base
+		fi
+
+		if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
+			sudo apt-get install nodejs npm
+			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+		fi
+
+		if [[ "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
+			sudo apt-get install node-typescript
+
+		fi
+
+		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
+			curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+			ghcup install ghc haskell-language-server
+		fi
+
+		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
+			sudo apt-get install perl perl-perl-languageserver
+		fi
+
 		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
 			sudo apt-get install default-jdk gradle
+		fi
+
+		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
+			sudo pacman -S postgresql
+		fi
+
+		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
+			sudo pacman -S sqlite
 		fi
 
 		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
@@ -115,8 +163,9 @@ if [ "$platform" = "linux" ]; then
 			sudo apt-get update
 			sudo apt-get install -y mongodb-org
 		fi
-		sudo apt-get install gum cava espeak-ng
+		# sudo apt-get install gum cava espeak-ng
 	elif [ "$distro" = "Fedora Linux" ]; then
+		# chown -R $USER /usr/local/lib
 		sudo yum update
 		sudo yum groupinstall "Development Tools"
 		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686
@@ -294,7 +343,7 @@ if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_la
 	npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
 		fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
 		sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
-		neovim gulp
+		neovim gulp --no-bin-links
 fi
 
 if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
