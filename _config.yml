@@ -28,7 +28,7 @@ twitter_username: fearlessspider
 github_username: fearless-spider
 
 # Build settings
-theme: hacker
+theme: just-the-docs
 plugins:
   - jekyll-feed
 # Exclude from processing.
