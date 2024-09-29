@@ -1,34 +1,34 @@
 # devenv
 
-A glamorous shell scripts to install development tools, libraries,.. on arch, macosx, fedora and ubuntu
+A glamorous shell scripts to install development tools, libraries,.. on :
 
 ## Operating System
 
-* Arch Linux
-* Fedora Linux
-* Ubuntu Linux
-* MacOSX
+- Arch Linux
+- Fedora Linux
+- Ubuntu Linux
+- MacOSX
 
 ## 🚀 Features
 
-* Git
-* Rust
-* Java
-* Python
-* Go
-* Lua
-* JavaScript
-* TypeScript
-* Ruby
-* Erlang
-* Elixir
-* Haskell
-* Perl
-* PostgreSQL
-* SQLite
-* MongoDB
-* NeoVim
-* LSP
+- Git
+- Rust
+- Java
+- Python
+- Go
+- Lua
+- JavaScript
+- TypeScript
+- Ruby
+- Erlang
+- Elixir
+- Haskell
+- Perl
+- PostgreSQL
+- SQLite
+- MongoDB
+- NeoVim
+- LSP
 
 ## 📖 Usage
 
