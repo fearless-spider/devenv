@@ -22,7 +22,7 @@ title: devenv.sh
 email: office@fearlessspider.com
 description: >- # this means to ignore newlines until "baseurl:"
   Script to install development tools, libraries,.. on arch, fedora, macosx and ubuntu
-baseurl: "/devenv/" # the subpath of your site, e.g. /blog
+baseurl: "/devenv" # the subpath of your site, e.g. /blog
 url: "https://github.com/fearless-spider" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: fearlessspider
 github_username: fearless-spider
