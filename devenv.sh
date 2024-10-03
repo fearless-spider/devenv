@@ -1,25 +1,26 @@
 #!/bin/bash
 
-echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on arch, macosx, fedora and ubuntu"
+echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
 
 platform='unknown'
 unamestr=$(uname)
 if [ "$unamestr" = 'Linux' ]; then
-platform='linux'
+	platform='linux'
 elif [ "$unamestr" = 'Darwin' ]; then
 	platform='darwin'
 fi
 
-read -p "What programming language do you need(separated by a space - all for all available languages)? " p_language
+read -p "What programming language do you need ex. python (separated by a space - all for all available languages)? " p_language
 
-read -p "What database do you need(separated by a space - all for all available databases)? " database
+read -p "What database do you need ex. sqlite (separated by a space - all for all available databases)? " database
+
+read -p "What tools do you need ex. docker (separated by a space - all for all available tools)? " tools
 
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
-		sudo pacman -Syy
-		sudo pacman -Su
+		sudo pacman -Syu
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
@@ -73,6 +74,18 @@ if [ "$platform" = "linux" ]; then
 			sudo pacman -S jdk-openjdk gradle
 		fi
 
+		if [[ "$p_language" = *"julia"* || "$p_language" = "all" ]]; then
+			sudo pacman -S julia
+		fi
+
+		if [[ "$p_language" = *"bash"* || "$p_language" = "all" ]]; then
+			sudo pacman -S bash-language-server shfmt shellcheck
+		fi
+
+		if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
+			sudo pacman -S cppcheck astyle iniparser
+		fi
+
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
 			sudo pacman -S postgresql
 		fi
@@ -85,10 +98,31 @@ if [ "$platform" = "linux" ]; then
 			yay -S mongodb-bin mongodb-tools-bin mongosh-bin
 		fi
 
-		sudo pacman -S iniparser fftw ncurses espeak-ng \
-			portaudio astyle shfmt cppcheck bash-language-server \
-			shellcheck ripgrep fd lazygit ncdu tmux github-cli gum
-		yay -S checkmake hadolint cava tetris-terminal-git
+		if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
+			sudo pacman -S hadolint
+		fi
+
+		if [[ "$tools" = *"makefile"* || "$tools" = "all" ]]; then
+			sudo pacman -S checkmake
+		fi
+
+		if [[ "$tools" = *"games"* || "$tools" = "all" ]]; then
+			yay -S tetris-terminal-git
+		fi
+
+		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
+			sudo pacman -S fftw ncurses espeak-ng portaudio
+			yay -S cava
+		fi
+
+		if [[ "$tools" = *"disk"* || "$tools" = "all" ]]; then
+			sudo pacman -S ncdu
+		fi
+
+		if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
+			sudo pacman -S ripgrep fd lazygit tmux github-cli gum
+		fi
+
 	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
@@ -149,16 +183,16 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo pacman -S postgresql
+			sudo apt-get install postgresql
 		fi
 
 		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-			sudo pacman -S sqlite
+			sudo apt-get install sqlite
 		fi
 
 		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
 			curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
-   		sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+			sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
 			echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 			sudo apt-get update
 			sudo apt-get install -y mongodb-org
@@ -316,7 +350,11 @@ fi
 if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 	curl https://pyenv.run | bash
 	pip install -U pip
-	pip install flake8 black isort cmake-language-server djlint pynvim
+	pip install flake8 black isort djlint pynvim
+fi
+
+if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
+	pip install cmake-language-server
 fi
 
 if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then

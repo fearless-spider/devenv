@@ -24,11 +24,13 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - Elixir
 - Haskell
 - Perl
+- Julia
 - PostgreSQL
 - SQLite
 - MongoDB
 - NeoVim
 - LSP
+- Tetris
 
 ## 📖 Usage
 
