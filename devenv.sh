@@ -17,7 +17,7 @@ read -p "What database do you need(separated by a space - all for all available 
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
-	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
+	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 		sudo pacman -Syy
 		sudo pacman -Su
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
@@ -340,10 +340,10 @@ fi
 gh extension install dlvhdr/gh-dash
 
 if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-	npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
+	sudo npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
 		fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
 		sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
-		neovim gulp --no-bin-links
+		neovim gulp
 fi
 
 if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
