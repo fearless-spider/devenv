@@ -71,7 +71,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-			sudo pacman -S jdk-openjdk gradle
+			sudo pacman -S jdk-openjdk gradle maven
 		fi
 
 		if [[ "$p_language" = *"julia"* || "$p_language" = "all" ]]; then
