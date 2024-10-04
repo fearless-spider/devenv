@@ -291,7 +291,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
-		brew install lua lua-language-server
+		brew install lua lua-language-server cmake
 	fi
 
 	if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
@@ -307,7 +307,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-		brew install ghc haskell-language-server
+		brew install ghc ghcup haskell-language-server
 	fi
 
 	if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
@@ -328,7 +328,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-		brew install gradle
+		brew install gradle maven
 	fi
 
 	brew install shellcheck ripgrep fd lazygit ncdu \
