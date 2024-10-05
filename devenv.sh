@@ -375,7 +375,9 @@ if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
 	sudo gitflow-toolkit install
 fi
 
-gh extension install dlvhdr/gh-dash
+if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
+	gh extension install dlvhdr/gh-dash
+fi
 
 if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
 	sudo npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
