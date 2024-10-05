@@ -38,7 +38,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-			sudo pacman -S rust rust-analyzer
+			sudo pacman -S rust rust-analyzer cargo
 		fi
 
 		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
