@@ -275,7 +275,7 @@ elif [ "$platform" = "darwin" ]; then
 	brew install git curl libtool automake openssl readline xz zlib autoconf-archive
 
 	if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-		brew install python
+		brew install python pyenv pyenv-virtualenv
 	fi
 
 	if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
