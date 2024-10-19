@@ -331,10 +331,17 @@ elif [ "$platform" = "darwin" ]; then
 		brew install gradle maven
 	fi
 
-	brew install shellcheck ripgrep fd lazygit ncdu \
-		hadolint checkmake gh gum fftw ncurses \
-		portaudio cava astyle shfmt cppcheck gitlint \
-		espeak circumflex clang-format bash-language-server \
+	if [[ "$p_language" = *"bash"* || "$p_language" = "all" ]]; then
+		brew install bash-language-server shfmt shellcheck
+	fi
+
+	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
+		brew install ripgrep fd lazygit tmux github-cli gum
+	fi
+
+	brew install ncdu hadolint checkmake gh fftw ncurses \
+		portaudio cava astyle cppcheck gitlint \
+		espeak circumflex clang-format \
 		efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
