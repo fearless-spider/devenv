@@ -327,6 +327,14 @@ elif [ "$platform" = "darwin" ]; then
 		brew install mongodb/brew/mongodb-community
 	fi
 
+	if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
+		brew install hadolint
+	fi
+
+	if [[ "$tools" = *"makefile"* || "$tools" = "all" ]]; then
+		brew install checkmake
+	fi
+
 	if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
 		brew install gradle maven
 	fi
@@ -335,14 +343,19 @@ elif [ "$platform" = "darwin" ]; then
 		brew install bash-language-server shfmt shellcheck
 	fi
 
+	if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
+		brew install fftw ncurses espeak portaudio cava
+	fi
+
+	if [[ "$tools" = *"disk"* || "$tools" = "all" ]]; then
+		brew install ncdu
+	fi
+
 	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
 		brew install ripgrep fd lazygit tmux github-cli gum
 	fi
 
-	brew install ncdu hadolint checkmake gh fftw ncurses \
-		portaudio cava astyle cppcheck gitlint \
-		espeak circumflex clang-format \
-		efm-langserver
+	brew install gh astyle cppcheck gitlint circumflex clang-format efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
 	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
