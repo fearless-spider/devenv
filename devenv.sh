@@ -364,7 +364,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$tools" = *"email"* || "$tools" = "all" ]]; then
-		brew install neomutt
+		brew install pass isync msmtp abook urlview neomutt
 	fi
 
 	brew install efm-langserver
