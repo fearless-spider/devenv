@@ -294,10 +294,6 @@ elif [ "$platform" = "darwin" ]; then
 		brew install lua lua-language-server cmake
 	fi
 
-	if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-		brew install go
-	fi
-
 	if [[ "$p_language" = *"javascript"* || "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
 		brew install node nvm typescript
 	fi
@@ -343,6 +339,14 @@ elif [ "$platform" = "darwin" ]; then
 		brew install bash-language-server shfmt shellcheck
 	fi
 
+	if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
+		brew install cppcheck astyle iniparser clang-format
+	fi
+	
+	if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
+		brew install gh gitlint
+	fi
+
 	if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
 		brew install fftw ncurses espeak portaudio cava
 	fi
@@ -352,7 +356,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-		brew install ripgrep fd lazygit tmux github-cli gum powerlevel10k
+		brew install ripgrep fd lazygit tmux github-cli gum powerlevel10k circumflex
 	fi
 
 	if [[ "$tools" = *"irc"* || "$tools" = "all" ]]; then
@@ -363,7 +367,7 @@ elif [ "$platform" = "darwin" ]; then
 		brew install neomutt
 	fi
 
-	brew install gh astyle cppcheck gitlint circumflex clang-format efm-langserver
+	brew install efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
 	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
