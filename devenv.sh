@@ -1,6 +1,9 @@
 #!/bin/bash
 
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
+echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash"
+echo "Databases: PostgreSQL, MongoDB, SQLite"
+echo "Tools: disk"
 
 platform='unknown'
 unamestr=$(uname)
