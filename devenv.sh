@@ -352,7 +352,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-		brew install ripgrep fd lazygit tmux github-cli gum
+		brew install ripgrep fd lazygit tmux github-cli gum powerlevel10k
 	fi
 
 	if [[ "$tools" = *"irc"* || "$tools" = "all" ]]; then
