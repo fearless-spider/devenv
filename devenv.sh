@@ -355,6 +355,14 @@ elif [ "$platform" = "darwin" ]; then
 		brew install ripgrep fd lazygit tmux github-cli gum
 	fi
 
+	if [[ "$tools" = *"irc"* || "$tools" = "all" ]]; then
+		brew install irssi
+	fi
+
+	if [[ "$tools" = *"email"* || "$tools" = "all" ]]; then
+		brew install neomutt
+	fi
+
 	brew install gh astyle cppcheck gitlint circumflex clang-format efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
