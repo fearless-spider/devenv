@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
-echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash"
+echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash, php"
 echo "Databases: PostgreSQL, MongoDB, SQLite"
 echo "Tools: disk"
 
@@ -87,6 +87,10 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
 			sudo pacman -S cppcheck astyle iniparser
+		fi
+
+		if [[ "$p_language" = *"php"* || "$p_language" = "all" ]]; then
+			sudo pacman -S php composer
 		fi
 
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
@@ -345,7 +349,7 @@ elif [ "$platform" = "darwin" ]; then
 	if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
 		brew install cppcheck astyle iniparser clang-format
 	fi
-	
+
 	if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
 		brew install gh gitlint
 	fi
