@@ -3,7 +3,7 @@
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
 echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash, php"
 echo "Databases: PostgreSQL, MongoDB, SQLite"
-echo "Tools: disk"
+echo "Tools: disk, ngrok"
 
 platform='unknown'
 unamestr=$(uname)
@@ -128,6 +128,10 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
 			sudo pacman -S ripgrep fd lazygit tmux github-cli gum
+		fi
+
+		if [[ "$tools" = *"ngrok"* || "$tools" = "all" ]]; then
+			yum -S ngrok
 		fi
 
 	elif [ "$distro" = "Ubuntu" ]; then
