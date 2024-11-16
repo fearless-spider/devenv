@@ -70,7 +70,8 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
-			sudo pacman -S perl perl-perl-languageserver
+			sudo pacman -S perl
+			yay -S perl-perl-languageserver
 		fi
 
 		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
@@ -131,7 +132,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$tools" = *"ngrok"* || "$tools" = "all" ]]; then
-			yum -S ngrok
+			yay -S ngrok
 		fi
 
 	elif [ "$distro" = "Ubuntu" ]; then
