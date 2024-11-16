@@ -430,8 +430,6 @@ if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
 	sdk install gradle
 fi
 
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-
 if [ -n "$ZSH_VERSION" ]; then
 	zsh_shell=true
 elif [ -n "$FISH_VERSION" ]; then
