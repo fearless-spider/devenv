@@ -27,7 +27,7 @@ if [ "$platform" = "linux" ]; then
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-			sudo pacman -S python python-pip
+			sudo pacman -S python python-pip python-pipx
 		fi
 
 		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
@@ -88,6 +88,7 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
 			sudo pacman -S cppcheck astyle iniparser
+			yay -S cmake-language-server
 		fi
 
 		if [[ "$p_language" = *"php"* || "$p_language" = "all" ]]; then
@@ -352,7 +353,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
-		brew install cppcheck astyle iniparser clang-format
+		brew install cppcheck astyle iniparser clang-format cmake-language-server
 	fi
 
 	if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
@@ -393,12 +394,6 @@ fi
 
 if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 	curl https://pyenv.run | bash
-	pip install -U pip
-	pip install flake8 black isort djlint pynvim
-fi
-
-if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
-	pip install cmake-language-server
 fi
 
 if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
