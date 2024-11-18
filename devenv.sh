@@ -218,7 +218,7 @@ if [ "$platform" = "linux" ]; then
 		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-			sudo yum install python-pip
+			sudo yum install python-pip python-devel
 		fi
 
 		if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
@@ -269,7 +269,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo yum install postgresql
+			sudo yum install postgresql postgresql-devel
 		fi
 
 		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
