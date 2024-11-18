@@ -215,7 +215,7 @@ if [ "$platform" = "linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update
 		sudo yum groupinstall "Development Tools"
-		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686
+		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 			sudo yum install python-pip python-devel
@@ -269,11 +269,11 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo yum install postgresql postgresql-devel
+			sudo yum install postgresql-server postgresql postgresql-devel
 		fi
 
 		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-			sudo yum install sqlite
+			sudo yum install sqlite sqlite-devel
 		fi
 
 		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
