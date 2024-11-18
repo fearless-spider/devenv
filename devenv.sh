@@ -242,7 +242,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
-			sudo yum install R-rlang
+			sudo yum install R
 		fi
 
 		if [[ "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
