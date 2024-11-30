@@ -210,7 +210,11 @@ if [ "$platform" = "linux" ]; then
 			sudo apt-get update
 			sudo apt-get install -y mongodb-org
 		fi
-		# sudo apt-get install gum cava espeak-ng
+
+		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
+			sudo apt-get install espeak-ng cava
+		fi
+
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update
@@ -280,7 +284,18 @@ if [ "$platform" = "linux" ]; then
 			echo "Not supported"
 		fi
 
-		sudo yum install cava espeak-ng gh qemu-kvm bridge-utils libvirt virt-install ncurses-libs.i686
+		if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
+			sudo yum install gh
+		fi
+
+		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
+			sudo yum install ncurses-libs.i686 espeak-ng cava
+		fi
+
+		if [[ "$tools" = *"qemu"* || "$tools" = "all" ]]; then
+			sudo yum install qemu-kvm bridge-utils libvirt virt-install
+		fi
+
 	fi
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
@@ -380,7 +395,6 @@ elif [ "$platform" = "darwin" ]; then
 		brew install pass isync msmtp abook urlview neomutt
 	fi
 
-	brew install efm-langserver
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
 	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
