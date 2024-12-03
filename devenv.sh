@@ -3,7 +3,7 @@
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
 echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash, php"
 echo "Databases: PostgreSQL, MongoDB, SQLite"
-echo "Tools: disk, ngrok, terminal"
+echo "Tools: disk, ngrok, terminal, ollama"
 
 platform='unknown'
 unamestr=$(uname)
@@ -136,6 +136,10 @@ if [ "$platform" = "linux" ]; then
 			yay -S ngrok
 		fi
 
+		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
+			curl -fsSL https://ollama.com/install.sh | sh
+		fi
+
 	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
@@ -213,6 +217,10 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
 			sudo apt-get install espeak-ng cava
+		fi
+
+		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
+			curl -fsSL https://ollama.com/install.sh | sh
 		fi
 
 	elif [ "$distro" = "Fedora Linux" ]; then
@@ -294,6 +302,10 @@ if [ "$platform" = "linux" ]; then
 
 		if [[ "$tools" = *"qemu"* || "$tools" = "all" ]]; then
 			sudo yum install qemu-kvm bridge-utils libvirt virt-install
+		fi
+
+		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
+			curl -fsSL https://ollama.com/install.sh | sh
 		fi
 
 	fi
@@ -393,6 +405,10 @@ elif [ "$platform" = "darwin" ]; then
 
 	if [[ "$tools" = *"email"* || "$tools" = "all" ]]; then
 		brew install pass isync msmtp abook urlview neomutt
+	fi
+
+	if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
+		echo "Please download it from https://ollama.com/download/mac"
 	fi
 
 	export LIBTOOL='which glibtool'
