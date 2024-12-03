@@ -66,7 +66,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-			sudo pacman -S ghc haskell-language-server
+			sudo pacman -S ghc haskell-language-server cabal-install
 		fi
 
 		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
@@ -108,7 +108,9 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
-			sudo pacman -S hadolint
+			sudo pacman -S docker docker-buildx docker-compose containerd
+			sudo usermod -aG docker $USER
+			newgrp docker
 		fi
 
 		if [[ "$tools" = *"makefile"* || "$tools" = "all" ]]; then
