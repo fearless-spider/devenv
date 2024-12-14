@@ -57,3 +57,5 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 The [BSD 3-Clause "New" or "Revised" License](LICENSE)
+
+![Alt](https://repobeats.axiom.co/api/embed/fce7ee20cc2c2e38a374e6162ea381f476306d15.svg "Repobeats analytics image")
