@@ -321,7 +321,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-		brew install ruby rbenv
+		brew install ruby rbenv standard
 	fi
 
 	if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
