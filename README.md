@@ -2,6 +2,8 @@
 
 A glamorous shell scripts to install development tools, libraries,.. on :
 
+![devenv usage](https://github.com/fearless-spider/devenv/blob/main/2024-03-11_14-38.avif?raw=true)
+
 ## Operating System
 
 - Arch Linux
@@ -37,8 +39,6 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 ```shell
 sh devenv.sh
 ```
-
-![devenv usage](https://github.com/fearless-spider/devenv/blob/main/2024-03-11_14-38.avif?raw=true)
 
 ## :seedling: TODO
 
