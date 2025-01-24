@@ -2,7 +2,7 @@
 
 A glamorous shell scripts to install development tools, libraries,.. on :
 
-![devenv usage](https://github.com/fearless-spider/devenv/blob/main/2024-03-11_14-38.avif?raw=true)
+![devenv usage](https://github.com/fearless-spider/devenv/blob/main/devenv.png?raw=true)
 
 ## Operating System
 
