@@ -61,3 +61,7 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 The [BSD 3-Clause "New" or "Revised" License](LICENSE)
+
+## Changelog
+
+[Changelog](./changelog.markdown)
