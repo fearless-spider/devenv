@@ -6,11 +6,24 @@ echo "Databases: PostgreSQL, MongoDB, SQLite"
 echo "Tools: disk, ngrok, terminal, ollama"
 
 platform='unknown'
+distro='unknown'
+shell='sh'
 unamestr=$(uname)
 if [ "$unamestr" = 'Linux' ]; then
 	platform='linux'
+	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 elif [ "$unamestr" = 'Darwin' ]; then
 	platform='darwin'
+fi
+
+if [ -n "$ZSH_VERSION" ]; then
+	shell='zsh'
+elif [ -n "$FISH_VERSION" ]; then
+	shell='fish'
+	curl -sL https://git.io/fisher | . && fisher install jorgebucaran/fisher
+	fisher install reitzig/sdkman-for-fish@v1.4.0
+elif [ -n "$BASH_VERSION" ]; then
+	shell='bash'
 fi
 
 read -p "What programming language do you need ex. python (separated by a space - all for all available languages)? " p_language
@@ -460,14 +473,4 @@ fi
 if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
 	curl -s "https://get.sdkman.io" | bash
 	sdk install gradle
-fi
-
-if [ -n "$ZSH_VERSION" ]; then
-	zsh_shell=true
-elif [ -n "$FISH_VERSION" ]; then
-	fish_shell=true
-	curl -sL https://git.io/fisher | . && fisher install jorgebucaran/fisher
-	fisher install reitzig/sdkman-for-fish@v1.4.0
-elif [ -n "$BASH_VERSION" ]; then
-	bash_shell=true
 fi
