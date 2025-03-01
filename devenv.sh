@@ -64,11 +64,14 @@ elif [ "$platform" = "darwin" ]; then
 	brew install git curl libtool automake openssl readline xz zlib autoconf-archive gum
 fi
 
-read -p "What programming language do you need ex. python (separated by a space - all for all available languages)? " p_language
+AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl")
+p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 14 --header "What programming language(s) do you need?")
 
-read -p "What database do you need ex. sqlite (separated by a space - all for all available databases)? " database
+AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
+databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "What database(s) do you need?")
 
-read -p "What tools do you need ex. docker (separated by a space - all for all available tools)? " tools
+AVAILABLE_TOOLS=("Docker" "Makefile" "GitHub" "IRC" "Email" "Disk" "Terminal" "Cava")
+tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 8 --header "What tool(s) do you need?")
 
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
@@ -369,103 +372,121 @@ if [ "$platform" = "linux" ]; then
 
 	fi
 elif [ "$platform" = "darwin" ]; then
+	for p_language in $p_languages; do
+		if [[ "$p_language" = *"Python"* ]]; then
+			brew install python pyenv pyenv-virtualenv
+		fi
 
-	if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-		brew install python pyenv pyenv-virtualenv
-	fi
+		if [[ "$p_language" = *"Ruby"* ]]; then
+			brew install ruby rbenv standard solargraph
+		fi
 
-	if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-		brew install ruby rbenv standard solargraph
-	fi
+		if [[ "$p_language" = *"Erlang"* ]]; then
+			brew install erlang rebar3
+		fi
 
-	if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
-		brew install erlang elixir rebar3 elixir-ls
-	fi
+		if [[ "$p_language" = *"Elixir"* ]]; then
+			brew install erlang elixir rebar3 elixir-ls
+		fi
 
-	if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-		brew install rust rust-analyzer
-	fi
+		if [[ "$p_language" = *"Rust"* ]]; then
+			brew install rust rust-analyzer
+		fi
 
-	if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
-		brew install lua lua-language-server cmake
-	fi
+		if [[ "$p_language" = *"Lua"* ]]; then
+			brew install lua lua-language-server cmake
+		fi
 
-	if [[ "$p_language" = *"javascript"* || "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
-		brew install node nvm typescript
-	fi
+		if [[ "$p_language" = *"JavaScript"* ]]; then
+			brew install node nvm
+		fi
 
-	if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-		brew install go gopls golangci-lint
-	fi
+		if [[ "$p_language" = *"TypeScript"* ]]; then
+			brew install node nvm typescript
+		fi
 
-	if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-		brew install ghc ghcup haskell-language-server
-	fi
+		if [[ "$p_language" = *"Go"* ]]; then
+			brew install go gopls golangci-lint
+		fi
 
-	if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
-		brew install perl
-	fi
+		if [[ "$p_language" = *"Haskell"* ]]; then
+			brew install ghc ghcup haskell-language-server
+		fi
 
-	if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-		brew install postgresql
-	fi
+		if [[ "$p_language" = *"Perl"* ]]; then
+			brew install perl
+		fi
 
-	if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-		brew install sqlite3
-	fi
+		if [[ "$p_language" = *"Java"* ]]; then
+			brew install java gradle maven
+		fi
 
-	if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
-		brew tap mongodb/brew
-		brew install mongodb/brew/mongodb-community
-	fi
+		if [[ "$p_language" = *"Bash"* ]]; then
+			brew install bash-language-server shfmt shellcheck
+		fi
 
-	if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
-		brew install hadolint
-	fi
+		if [[ "$p_language" = *"C/C++"* ]]; then
+			brew install cppcheck astyle iniparser clang-format cmake-language-server
+		fi
 
-	if [[ "$tools" = *"makefile"* || "$tools" = "all" ]]; then
-		brew install checkmake
-	fi
+		if [[ "$p_language" = *"PHP"* ]]; then
+			brew install php
+		fi
+	done
 
-	if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-		brew install gradle maven
-	fi
+	for database in $databases; do
+		if [[ "$database" = *"PostgreSQL"* ]]; then
+			brew install postgresql
+		fi
 
-	if [[ "$p_language" = *"bash"* || "$p_language" = "all" ]]; then
-		brew install bash-language-server shfmt shellcheck
-	fi
+		if [[ "$database" = *"SQLite"* ]]; then
+			brew install sqlite3
+		fi
 
-	if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
-		brew install cppcheck astyle iniparser clang-format cmake-language-server
-	fi
+		if [[ "$database" = *"MongoDB"* ]]; then
+			brew tap mongodb/brew
+			brew install mongodb/brew/mongodb-community
+		fi
+	done
 
-	if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
-		brew install gh gitlint
-	fi
+	for tool in $tools; do
+		if [[ "$tools" = *"Docker"* ]]; then
+			brew cask install docker
+			brew install hadolint
+		fi
 
-	if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
-		brew install fftw ncurses espeak portaudio cava
-	fi
+		if [[ "$tools" = *"Makefile"* ]]; then
+			brew install checkmake
+		fi
 
-	if [[ "$tools" = *"disk"* || "$tools" = "all" ]]; then
-		brew install ncdu
-	fi
+		if [[ "$tool" = *"GitHub"* ]]; then
+			brew install gh gitlint
+		fi
 
-	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-		brew install ripgrep fd lazygit tmux github-cli powerlevel10k circumflex
-	fi
+		if [[ "$tool" = *"Cava"* ]]; then
+			brew install fftw ncurses espeak portaudio cava
+		fi
 
-	if [[ "$tools" = *"irc"* || "$tools" = "all" ]]; then
-		brew install irssi
-	fi
+		if [[ "$tool" = *"Disk"* ]]; then
+			brew install ncdu
+		fi
 
-	if [[ "$tools" = *"email"* || "$tools" = "all" ]]; then
-		brew install pass isync msmtp abook urlview neomutt
-	fi
+		if [[ "$tool" = *"Terminal"* ]]; then
+			brew install ripgrep fd lazygit tmux github-cli powerlevel10k circumflex
+		fi
 
-	if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
-		echo "Please download it from https://ollama.com/download/mac"
-	fi
+		if [[ "$tool" = *"IRC"* ]]; then
+			brew install irssi
+		fi
+
+		if [[ "$tool" = *"Email"* ]]; then
+			brew install pass isync msmtp abook urlview neomutt
+		fi
+
+		if [[ "$tool" = *"Ollama"* ]]; then
+			echo "Please download it from https://ollama.com/download/mac"
+		fi
+	done
 
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
