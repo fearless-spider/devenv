@@ -26,6 +26,32 @@ elif [ -n "$BASH_VERSION" ]; then
 	shell='bash'
 fi
 
+# Required packages
+if [ "$platform" = "linux" ]; then
+	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
+	echo "Determined platform: $distro"
+
+	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
+		sudo pacman -Syu
+		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
+	elif [ "$distro" = "Ubuntu" ]; then
+		sudo apt-get update
+		sudo apt-get upgrade
+		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
+			libreadline-dev libedit-dev libssl-dev \
+			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
+	elif [ "$distro" = "Fedora Linux" ]; then
+		# chown -R $USER /usr/local/lib
+		sudo yum update
+		sudo yum groupinstall "Development Tools"
+		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel
+	fi
+elif [ "$platform" = "darwin" ]; then
+	echo "Determined platform: $platform"
+	brew update && brew upgrade
+	brew install git curl libtool automake openssl readline xz zlib autoconf-archive
+fi
+
 read -p "What programming language do you need ex. python (separated by a space - all for all available languages)? " p_language
 
 read -p "What database do you need ex. sqlite (separated by a space - all for all available databases)? " database
@@ -36,8 +62,6 @@ if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
-		sudo pacman -Syu
-		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 			sudo pacman -S python python-pip python-pipx
@@ -156,11 +180,6 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 	elif [ "$distro" = "Ubuntu" ]; then
-		sudo apt-get update
-		sudo apt-get upgrade
-		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
-			libreadline-dev libedit-dev libssl-dev \
-			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 			sudo apt-get install python3-full python3-pip
@@ -239,10 +258,6 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 	elif [ "$distro" = "Fedora Linux" ]; then
-		# chown -R $USER /usr/local/lib
-		sudo yum update
-		sudo yum groupinstall "Development Tools"
-		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel
 
 		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 			sudo yum install python-pip python-devel
@@ -325,9 +340,6 @@ if [ "$platform" = "linux" ]; then
 
 	fi
 elif [ "$platform" = "darwin" ]; then
-	echo "Determined platform: $platform"
-	brew update && brew upgrade
-	brew install git curl libtool automake openssl readline xz zlib autoconf-archive
 
 	if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
 		brew install python pyenv pyenv-virtualenv
