@@ -33,23 +33,35 @@ if [ "$platform" = "linux" ]; then
 
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 		sudo pacman -Syu
-		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake
+		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake gum
 	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
 		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
 			libreadline-dev libedit-dev libssl-dev \
 			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
+		sudo mkdir -p /etc/apt/keyrings
+		curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+		echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+		sudo apt update && sudo apt install gum
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update
 		sudo yum groupinstall "Development Tools"
 		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel
+		echo '[charm]
+		name=Charm
+		baseurl=https://repo.charm.sh/yum/
+		enabled=1
+		gpgcheck=1
+		gpgkey=https://repo.charm.sh/yum/gpg.key' | sudo tee /etc/yum.repos.d/charm.repo
+		sudo rpm --import https://repo.charm.sh/yum/gpg.key
+		sudo yum install gum
 	fi
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
 	brew update && brew upgrade
-	brew install git curl libtool automake openssl readline xz zlib autoconf-archive
+	brew install git curl libtool automake openssl readline xz zlib autoconf-archive gum
 fi
 
 read -p "What programming language do you need ex. python (separated by a space - all for all available languages)? " p_language
@@ -168,7 +180,7 @@ if [ "$platform" = "linux" ]; then
 		fi
 
 		if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-			sudo pacman -S ripgrep fd lazygit tmux github-cli gum
+			sudo pacman -S ripgrep fd lazygit tmux github-cli
 		fi
 
 		if [[ "$tools" = *"ngrok"* || "$tools" = "all" ]]; then
@@ -423,7 +435,7 @@ elif [ "$platform" = "darwin" ]; then
 	fi
 
 	if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-		brew install ripgrep fd lazygit tmux github-cli gum powerlevel10k circumflex
+		brew install ripgrep fd lazygit tmux github-cli powerlevel10k circumflex
 	fi
 
 	if [[ "$tools" = *"irc"* || "$tools" = "all" ]]; then
