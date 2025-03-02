@@ -291,85 +291,94 @@ if [ "$platform" = "linux" ]; then
 
 	elif [ "$distro" = "Fedora Linux" ]; then
 
-		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-			sudo yum install python-pip python-devel
-		fi
+		for p_language in $p_languages; do
+			if [[ "$p_language" = *"Python"* ]]; then
+				sudo yum install python-pip python-devel
+			fi
 
-		if [[ "$p_language" = *"erlang"* || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
-			sudo yum install erlang elixir rebar
-		fi
+			if [[ "$p_language" = *"Erlang"* ]]; then
+				sudo yum install erlang rebar
+			fi
 
-		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-			sudo yum install libyaml-devel ruby ruby-devel rubygems
-		fi
+			if [[ "$p_language" = *"Elixir"* ]]; then
+				sudo yum install erlang elixir rebar
+			fi
 
-		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-			sudo yum install rust rust-analyzer cargo
-		fi
+			if [[ "$p_language" = *"Ruby"* ]]; then
+				sudo yum install libyaml-devel ruby ruby-devel rubygems
+			fi
 
-		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-			sudo yum install go
-		fi
+			if [[ "$p_language" = *"Rust"* ]]; then
+				sudo yum install rust rust-analyzer cargo
+			fi
 
-		if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
-			sudo yum install lua luarocks
-		fi
+			if [[ "$p_language" = *"Go"* ]]; then
+				sudo yum install go
+			fi
 
-		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
-			sudo yum install R
-		fi
+			if [[ "$p_language" = *"Lua"* ]]; then
+				sudo yum install lua luarocks
+			fi
 
-		if [[ "$p_language" = *"javascript"* || "$p_language" = "all" ]]; then
-			sudo yum install nodejs npm
-			sudo npm install -g nvm prettier
-		fi
+			if [[ "$p_language" = *"R-lang"* ]]; then
+				sudo yum install R
+			fi
 
-		if [[ "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-			sudo yum install typescript
-		fi
+			if [[ "$p_language" = *"JavaScript"* ]]; then
+				sudo yum install nodejs npm
+				sudo npm install -g nvm prettier
+			fi
 
-		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-			sudo dnf copr enable petersen/haskell-language-server
-			sudo yum install ghc-compiler haskell-language-server
-		fi
+			if [[ "$p_language" = *"TypeScript"* ]]; then
+				sudo yum install typescript
+			fi
 
-		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
-			sudo yum install perl
-			sudo cpan Perl::LanguageServer
-		fi
+			if [[ "$p_language" = *"Haskell"* ]]; then
+				sudo dnf copr enable petersen/haskell-language-server
+				sudo yum install ghc-compiler haskell-language-server
+			fi
 
-		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-			sudo yum install java
-		fi
+			if [[ "$p_language" = *"Perl"* ]]; then
+				sudo yum install perl
+				sudo cpan Perl::LanguageServer
+			fi
 
-		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo yum install postgresql-server postgresql postgresql-devel
-		fi
+			if [[ "$p_language" = *"Java"* ]]; then
+				sudo yum install java
+			fi
+		done
 
-		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-			sudo yum install sqlite sqlite-devel
-		fi
+		for database in $databases; do
+			if [[ "$database" = *"PostgreSQL"* ]]; then
+				sudo yum install postgresql-server postgresql postgresql-devel
+			fi
 
-		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
-			echo "Not supported"
-		fi
+			if [[ "$database" = *"SQLite"* ]]; then
+				sudo yum install sqlite sqlite-devel
+			fi
 
-		if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
-			sudo yum install gh
-		fi
+			if [[ "$database" = *"MongoDB"* ]]; then
+				echo "Not supported"
+			fi
+		done
 
-		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
-			sudo yum install ncurses-libs.i686 espeak-ng cava
-		fi
+		for tool in $tools; do
+			if [[ "$tool" = *"GitHub"* ]]; then
+				sudo yum install gh
+			fi
 
-		if [[ "$tools" = *"qemu"* || "$tools" = "all" ]]; then
-			sudo yum install qemu-kvm bridge-utils libvirt virt-install
-		fi
+			if [[ "$tool" = *"Cava"* ]]; then
+				sudo yum install ncurses-libs.i686 espeak-ng cava
+			fi
 
-		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
-			curl -fsSL https://ollama.com/install.sh | sh
-		fi
+			if [[ "$tool" = *"Qemu"* ]]; then
+				sudo yum install qemu-kvm bridge-utils libvirt virt-install
+			fi
 
+			if [[ "$tool" = *"Ollama"* ]]; then
+				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+		done
 	fi
 elif [ "$platform" = "darwin" ]; then
 	for p_language in $p_languages; do
