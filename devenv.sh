@@ -317,12 +317,12 @@ if [ "$platform" = "linux" ]; then
 				sudo yum install python-pip python-devel
 			fi
 
-			if [[ "$p_language" = *"Erlang"* ]]; then
+			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 				sudo yum install erlang rebar
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo yum install erlang elixir rebar
+				sudo yum install elixir
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
@@ -411,12 +411,12 @@ elif [ "$platform" = "darwin" ]; then
 			brew install ruby rbenv standard solargraph
 		fi
 
-		if [[ "$p_language" = *"Erlang"* ]]; then
+		if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 			brew install erlang rebar3
 		fi
 
 		if [[ "$p_language" = *"Elixir"* ]]; then
-			brew install erlang elixir rebar3 elixir-ls
+			brew install elixir elixir-ls
 		fi
 
 		if [[ "$p_language" = *"Rust"* ]]; then
@@ -427,12 +427,12 @@ elif [ "$platform" = "darwin" ]; then
 			brew install lua lua-language-server cmake
 		fi
 
-		if [[ "$p_language" = *"JavaScript"* ]]; then
+		if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 			brew install node nvm
 		fi
 
 		if [[ "$p_language" = *"TypeScript"* ]]; then
-			brew install node nvm typescript
+			brew install typescript
 		fi
 
 		if [[ "$p_language" = *"Go"* ]]; then
