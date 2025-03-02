@@ -64,6 +64,11 @@ elif [ "$platform" = "darwin" ]; then
 	brew install git curl libtool automake openssl readline xz zlib autoconf-archive gum
 fi
 
+gum style \
+	--foreground 36 --border-foreground 36 --border double \
+	--align center --width 50 --margin "1 2" --padding "2 4" \
+	'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
+
 AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl")
 p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 14 --header "What programming language(s) do you need?")
 
