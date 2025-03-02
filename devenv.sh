@@ -196,98 +196,108 @@ if [ "$platform" = "linux" ]; then
 
 	elif [ "$distro" = "Ubuntu" ]; then
 
-		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-			sudo apt-get install python3-full python3-pip
-		fi
+		for p_language in $p_languages; do
+			if [[ "$p_language" = *"Python"* ]]; then
+				sudo apt-get install python3-full python3-pip
+			fi
 
-		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
-			sudo apt-get install erlang elixir rebar3 # elixir-ls
-		fi
+			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
+				sudo apt-get install erlang rebar3 # elixir-ls
+			fi
 
-		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-			sudo apt-get install ruby-full
-		fi
+			if [[ "$p_language" = *"Elixir"* ]]; then
+				sudo apt-get install elixir # elixir-ls
+			fi
 
-		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-			curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-			sudo apt-get install rust-analyzer
-		fi
+			if [[ "$p_language" = *"Ruby"* ]]; then
+				sudo apt-get install ruby-full
+			fi
 
-		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-			sudo apt-get install golang-go gopls
-		fi
+			if [[ "$p_language" = *"Rust"* ]]; then
+				curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+				sudo apt-get install rust-analyzer
+			fi
 
-		if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
-			sudo apt-get install lua5.4 luarocks # lua-language-server
-		fi
+			if [[ "$p_language" = *"Go"* ]]; then
+				sudo apt-get install golang-go gopls
+			fi
 
-		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
-			sudo apt-get install r-base
-		fi
+			if [[ "$p_language" = *"Lua"* ]]; then
+				sudo apt-get install lua5.4 luarocks # lua-language-server
+			fi
 
-		if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-			sudo apt-get install nodejs npm
-			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-		fi
+			if [[ "$p_language" = *"R-lang"* ]]; then
+				sudo apt-get install r-base
+			fi
 
-		if [[ "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-			sudo apt-get install node-typescript
+			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
+				sudo apt-get install nodejs npm
+				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+			fi
 
-		fi
+			if [[ "$p_language" = *"TypeScript"* ]]; then
+				sudo apt-get install node-typescript
 
-		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-			curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-			ghcup install ghc haskell-language-server
-		fi
+			fi
 
-		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
-			sudo apt-get install perl perl-perl-languageserver
-		fi
+			if [[ "$p_language" = *"Haskell"* ]]; then
+				curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+				ghcup install ghc haskell-language-server
+			fi
 
-		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-			sudo apt-get install default-jdk gradle
-		fi
+			if [[ "$p_language" = *"Perl"* ]]; then
+				sudo apt-get install perl perl-perl-languageserver
+			fi
 
-		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo apt-get install postgresql
-		fi
+			if [[ "$p_language" = *"Java"* ]]; then
+				sudo apt-get install default-jdk gradle
+			fi
+		done
 
-		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-			sudo apt-get install sqlite
-		fi
+		for database in $databases; do
+			if [[ "$database" = *"PostgreSQL"* ]]; then
+				sudo apt-get install postgresql
+			fi
 
-		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
-			curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
-			sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
-			echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-			sudo apt-get update
-			sudo apt-get install -y mongodb-org
-		fi
+			if [[ "$database" = *"SQLite"* ]]; then
+				sudo apt-get install sqlite
+			fi
 
-		if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
-			sudo install -m 0755 -d /etc/apt/keyrings
-			sudo wget -qO /etc/apt/keyrings/docker.asc https://download.docker.com/linux/ubuntu/gpg
-			sudo chmod a+r /etc/apt/keyrings/docker.asc
-			echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-			sudo apt update
+			if [[ "$database" = *"MongoDB"* ]]; then
+				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
+				sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+				sudo apt-get update
+				sudo apt-get install -y mongodb-org
+			fi
+		done
 
-			# Install Docker engine and standard plugins
-			sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras
+		for tool in $tools; do
+			if [[ "$tool" = *"Docker"* ]]; then
+				sudo install -m 0755 -d /etc/apt/keyrings
+				sudo wget -qO /etc/apt/keyrings/docker.asc https://download.docker.com/linux/ubuntu/gpg
+				sudo chmod a+r /etc/apt/keyrings/docker.asc
+				echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+				sudo apt update
 
-			# Give this user privileged Docker access
-			sudo usermod -aG docker ${USER}
+				# Install Docker engine and standard plugins
+				sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-ce-rootless-extras
 
-			# Limit log size to avoid running out of disk
-			echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
-		fi
+				# Give this user privileged Docker access
+				sudo usermod -aG docker ${USER}
 
-		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
-			sudo apt-get install espeak-ng cava
-		fi
+				# Limit log size to avoid running out of disk
+				echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
+			fi
 
-		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
-			curl -fsSL https://ollama.com/install.sh | sh
-		fi
+			if [[ "$tool" = *"Cava"* ]]; then
+				sudo apt-get install espeak-ng cava
+			fi
+
+			if [[ "$tool" = *"Ollama"* ]]; then
+				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+		done
 
 	elif [ "$distro" = "Fedora Linux" ]; then
 
