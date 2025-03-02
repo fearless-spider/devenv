@@ -78,121 +78,132 @@ if [ "$platform" = "linux" ]; then
 	echo "Determined platform: $distro"
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 
-		if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
-			sudo pacman -S python python-pip python-pipx
-		fi
+		for p_language in $p_languages; do
+			if [[ "$p_language" = *"Python"* ]]; then
+				sudo pacman -S python python-pip python-pipx
+			fi
 
-		if [[ "$p_language" = *"erlang" || "$p_language" = *"elixir"* || "$p_language" = "all" ]]; then
-			sudo pacman -S erlang elixir
-			yay -S rebar3 elixir-ls
-		fi
+			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
+				sudo pacman -S erlang
+				yay -S rebar3
+			fi
 
-		if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
-			sudo pacman -S ruby
-			yay -S rbenv
-		fi
+			if [[ "$p_language" = *"Elixir"* ]]; then
+				sudo pacman -S elixir
+				yay -S elixir-ls
+			fi
 
-		if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
-			sudo pacman -S rust rust-analyzer cargo
-		fi
+			if [[ "$p_language" = *"Ruby"* ]]; then
+				sudo pacman -S ruby
+				yay -S rbenv
+			fi
 
-		if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
-			sudo pacman -S go gopls
-		fi
+			if [[ "$p_language" = *"Rust"* ]]; then
+				sudo pacman -S rust rust-analyzer cargo
+			fi
 
-		if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
-			sudo pacman -S lua luarocks lua-language-server
-		fi
+			if [[ "$p_language" = *"Go"* ]]; then
+				sudo pacman -S go gopls
+			fi
 
-		if [[ "$p_language" = *"r-lang"* || "$p_language" = "all" ]]; then
-			yay -S r-rlang
-		fi
+			if [[ "$p_language" = *"Lua"* ]]; then
+				sudo pacman -S lua luarocks lua-language-server
+			fi
 
-		if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-			sudo pacman -S nodejs npm prettier
-			yay -S nvm
-		fi
+			if [[ "$p_language" = *"R-lang"* ]]; then
+				yay -S r-rlang
+			fi
 
-		if [[ "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
-			sudo pacman -S typescript
-		fi
+			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
+				sudo pacman -S nodejs npm prettier
+				yay -S nvm
+			fi
 
-		if [[ "$p_language" = *"haskell"* || "$p_language" = "all" ]]; then
-			sudo pacman -S ghc haskell-language-server cabal-install
-		fi
+			if [[ "$p_language" = *"TypeScript"* ]]; then
+				sudo pacman -S typescript
+			fi
 
-		if [[ "$p_language" = *"perl"* || "$p_language" = "all" ]]; then
-			sudo pacman -S perl
-			yay -S perl-perl-languageserver
-		fi
+			if [[ "$p_language" = *"Haskell"* ]]; then
+				sudo pacman -S ghc haskell-language-server cabal-install
+			fi
 
-		if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
-			sudo pacman -S jdk-openjdk gradle maven
-		fi
+			if [[ "$p_language" = *"Perl"* ]]; then
+				sudo pacman -S perl
+				yay -S perl-perl-languageserver
+			fi
 
-		if [[ "$p_language" = *"julia"* || "$p_language" = "all" ]]; then
-			sudo pacman -S julia
-		fi
+			if [[ "$p_language" = *"Java"* ]]; then
+				sudo pacman -S jdk-openjdk gradle maven
+			fi
 
-		if [[ "$p_language" = *"bash"* || "$p_language" = "all" ]]; then
-			sudo pacman -S bash-language-server shfmt shellcheck
-		fi
+			if [[ "$p_language" = *"Julia"* ]]; then
+				sudo pacman -S julia
+			fi
 
-		if [[ "$p_language" = *"cpp"* || "$p_language" = "all" ]]; then
-			sudo pacman -S cppcheck astyle iniparser
-			yay -S cmake-language-server
-		fi
+			if [[ "$p_language" = *"Bash"* ]]; then
+				sudo pacman -S bash-language-server shfmt shellcheck
+			fi
 
-		if [[ "$p_language" = *"php"* || "$p_language" = "all" ]]; then
-			sudo pacman -S php composer
-		fi
+			if [[ "$p_language" = *"C/C++"* ]]; then
+				sudo pacman -S cppcheck astyle iniparser
+				yay -S cmake-language-server
+			fi
 
-		if [[ "$database" = *"postgresql"* || "$database" = "all" ]]; then
-			sudo pacman -S postgresql
-		fi
+			if [[ "$p_language" = *"PHP"* ]]; then
+				sudo pacman -S php composer
+			fi
+		done
 
-		if [[ "$database" = *"sqlite"* || "$database" = "all" ]]; then
-			sudo pacman -S sqlite
-		fi
+		for database in $databases; do
+			if [[ "$database" = *"PostgreSQL"* ]]; then
+				sudo pacman -S postgresql
+			fi
 
-		if [[ "$database" = *"mongo"* || "$database" = "all" ]]; then
-			yay -S mongodb-bin mongodb-tools-bin mongosh-bin
-		fi
+			if [[ "$database" = *"SQLite"* ]]; then
+				sudo pacman -S sqlite
+			fi
 
-		if [[ "$tools" = *"docker"* || "$tools" = "all" ]]; then
-			sudo pacman -S docker docker-buildx docker-compose containerd
-			sudo usermod -aG docker $USER
-			newgrp docker
-		fi
+			if [[ "$database" = *"MongoDB"* ]]; then
+				yay -S mongodb-bin mongodb-tools-bin mongosh-bin
+			fi
+		done
 
-		if [[ "$tools" = *"makefile"* || "$tools" = "all" ]]; then
-			sudo pacman -S checkmake
-		fi
+		for tool in $tools; do
+			if [[ "$tool" = *"Docker"* ]]; then
+				sudo pacman -S docker docker-buildx docker-compose containerd
+				sudo usermod -aG docker $USER
+				newgrp docker
+			fi
 
-		if [[ "$tools" = *"games"* || "$tools" = "all" ]]; then
-			yay -S tetris-terminal-git
-		fi
+			if [[ "$tool" = *"Makefile"* ]]; then
+				sudo pacman -S checkmake
+			fi
 
-		if [[ "$tools" = *"cava"* || "$tools" = "all" ]]; then
-			sudo pacman -S fftw ncurses espeak-ng portaudio
-			yay -S cava
-		fi
+			if [[ "$tool" = *"Games"* ]]; then
+				yay -S tetris-terminal-git
+			fi
 
-		if [[ "$tools" = *"disk"* || "$tools" = "all" ]]; then
-			sudo pacman -S ncdu
-		fi
+			if [[ "$tool" = *"Cava"* ]]; then
+				sudo pacman -S fftw ncurses espeak-ng portaudio
+				yay -S cava
+			fi
 
-		if [[ "$tools" = *"terminal"* || "$tools" = "all" ]]; then
-			sudo pacman -S ripgrep fd lazygit tmux github-cli
-		fi
+			if [[ "$tool" = *"Disk"* ]]; then
+				sudo pacman -S ncdu
+			fi
 
-		if [[ "$tools" = *"ngrok"* || "$tools" = "all" ]]; then
-			yay -S ngrok
-		fi
+			if [[ "$tool" = *"Terminal"* ]]; then
+				sudo pacman -S ripgrep fd lazygit tmux github-cli
+			fi
 
-		if [[ "$tools" = *"ollama"* || "$tools" = "all" ]]; then
-			curl -fsSL https://ollama.com/install.sh | sh
-		fi
+			if [[ "$tool" = *"Ngrok"* ]]; then
+				yay -S ngrok
+			fi
+
+			if [[ "$tool" = *"Ollama"* ]]; then
+				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+		done
 
 	elif [ "$distro" = "Ubuntu" ]; then
 
