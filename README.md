@@ -27,6 +27,8 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - Haskell
 - Perl
 - Julia
+- PHP
+- R-lang
 - PostgreSQL
 - SQLite
 - MongoDB
@@ -42,7 +44,6 @@ sh devenv.sh
 
 ## :seedling: TODO
 
-- PHP
 - MariaDB
 - Redis
 
