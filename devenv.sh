@@ -1,9 +1,9 @@
 #!/bin/bash
 
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
-echo "Programming languages: python, elixir, erlang, ruby, rust, go, lua, r-lang, javascript, typescript, haskell, perl, java, julia, cpp, bash, php"
-echo "Databases: PostgreSQL, MongoDB, SQLite"
-echo "Tools: disk, ngrok, terminal, ollama"
+echo "Programming languages: Python, Elixir, Erlang, Ruby, Rust, Go, Lua, R-lang, JavaScript, TypeScript, Haskell, Perl, Java, Julia, C/C++, Bash, PHP"
+echo "Databases: PostgreSQL, MongoDB, SQLite, MySQL"
+echo "Tools: Disk, Ngrok, Terminal, Cava, GitHub, IRC, Ollama"
 
 platform='unknown'
 distro='unknown'
@@ -268,6 +268,14 @@ if [ "$platform" = "linux" ]; then
 			if [[ "$p_language" = *"Java"* ]]; then
 				sudo apt-get install default-jdk gradle
 			fi
+
+			if [[ "$p_language" = *"PHP"* ]]; then
+				sudo add-apt-repository -y ppa:ondrej/php
+				sudo apt -y install php8.4 php8.4-{curl,apcu,intl,mbstring,opcache,pgsql,mysql,sqlite3,redis,xml,zip}
+				php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+				php composer-setup.php --quiet && sudo mv composer.phar /usr/local/bin/composer
+				rm composer-setup.php
+			fi
 		done
 
 		for database in $databases; do
@@ -371,6 +379,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$p_language" = *"Java"* ]]; then
 				sudo yum install java
+			fi
+
+			if [[ "$p_language" = *"PHP"* ]]; then
+				sudo dnf install php-cli phpunit composer php-mysqli
 			fi
 		done
 
@@ -529,24 +541,24 @@ elif [ "$platform" = "darwin" ]; then
 	ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
-if [[ "$p_language" = *"ruby"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"ruby"* ]]; then
 	sudo gem update
 	sudo gem install solargraph rubocop neovim tmuxinator
 fi
 
-if [[ "$p_language" = *"python"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"Python"* ]]; then
 	curl https://pyenv.run | bash
 fi
 
-if [[ "$p_language" = *"lua"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"Lua"* ]]; then
 	sudo luarocks install luacheck
 fi
 
-if [[ "$p_language" = *"rust"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"Rust"* ]]; then
 	cargo install selene stylua efmt bliss
 fi
 
-if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"Go"* ]]; then
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
 	go install github.com/maaslalani/nap@main
 	go install github.com/DyegoCosta/snake-game@latest
@@ -556,18 +568,18 @@ if [[ "$p_language" = *"go"* || "$p_language" = "all" ]]; then
 	sudo gitflow-toolkit install
 fi
 
-if [[ "$tools" = *"github"* || "$tools" = "all" ]]; then
+if [[ "$tools" = *"GitHub"* ]]; then
 	gh extension install dlvhdr/gh-dash
 fi
 
-if [[ "$p_language" = *"javascript"* || "$p_language" = *"typescript"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"JavaScript"* || "$p_languages" = *"TypeScript"* ]]; then
 	sudo npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
 		fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
 		sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
 		neovim gulp
 fi
 
-if [[ "$p_language" = *"java"* || "$p_language" = "all" ]]; then
+if [[ "$p_languages" = *"Java"* ]]; then
 	curl -s "https://get.sdkman.io" | bash
 	sdk install gradle
 fi
