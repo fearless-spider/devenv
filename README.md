@@ -2,7 +2,7 @@
 
 A glamorous shell scripts to install development tools, libraries,.. on :
 
-![devenv usage](https://github.com/fearless-spider/devenv/blob/main/devenv.png?raw=true)
+![devenv usage](https://github.com/fearless-spider/devenv/blob/main/devenv_gum.png?raw=true)
 
 ## Operating System
 
@@ -13,7 +13,8 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 
 ## 🚀 Features
 
-- Git
+### Programmin languages
+
 - Rust
 - Java
 - Python
@@ -29,12 +30,28 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - Julia
 - PHP
 - R-lang
+
+### Databases
+
 - PostgreSQL
 - SQLite
 - MongoDB
+
+### Tools
+
 - NeoVim
+- Docker
+- GitHub
+- Email
+- IRC
+- Disk
+- Cava
+- Ollama
+- Terminal tools
+- Nap
 - LSP
 - Tetris
+- Snake
 
 ## 📖 Usage
 

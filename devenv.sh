@@ -27,6 +27,8 @@ elif [ -n "$BASH_VERSION" ]; then
 fi
 
 # Required packages
+echo "Installing base packages"
+
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
@@ -541,7 +543,7 @@ elif [ "$platform" = "darwin" ]; then
 	ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
-if [[ "$p_languages" = *"ruby"* ]]; then
+if [[ "$p_languages" = *"Ruby"* ]]; then
 	sudo gem update
 	sudo gem install solargraph rubocop neovim tmuxinator
 fi
