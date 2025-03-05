@@ -71,8 +71,8 @@ gum style \
 	--align center --width 50 --margin "1 2" --padding "2 4" \
 	'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
 
-AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl")
-p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 14 --header "What programming language(s) do you need?")
+AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
+p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "What programming language(s) do you need?")
 
 AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
 databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "What database(s) do you need?")

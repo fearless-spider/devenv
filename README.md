@@ -15,6 +15,7 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 
 ### Programmin languages
 
+- C/C++
 - Rust
 - Java
 - Python
