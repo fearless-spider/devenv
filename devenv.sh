@@ -77,8 +77,8 @@ p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --he
 AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
 databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "What database(s) do you need?")
 
-AVAILABLE_TOOLS=("Docker" "Makefile" "GitHub" "IRC" "Email" "Disk" "Terminal" "Cava")
-tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 8 --header "What tool(s) do you need?")
+AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Email" "Disk" "Terminal" "Cava")
+tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 9 --header "What tool(s) do you need?")
 
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
@@ -176,6 +176,10 @@ if [ "$platform" = "linux" ]; then
 		done
 
 		for tool in $tools; do
+			if [[ "$tool" = *"NeoVim"* ]]; then
+				sudo pacman -S neovim
+			fi
+
 			if [[ "$tool" = *"Docker"* ]]; then
 				sudo pacman -S docker docker-buildx docker-compose containerd
 				sudo usermod -aG docker $USER
@@ -299,6 +303,10 @@ if [ "$platform" = "linux" ]; then
 		done
 
 		for tool in $tools; do
+			if [[ "$tool" = *"NeoVim"* ]]; then
+				sudo apt-get install neovim
+			fi
+
 			if [[ "$tool" = *"Docker"* ]]; then
 				sudo install -m 0755 -d /etc/apt/keyrings
 				sudo wget -qO /etc/apt/keyrings/docker.asc https://download.docker.com/linux/ubuntu/gpg
@@ -403,6 +411,14 @@ if [ "$platform" = "linux" ]; then
 		done
 
 		for tool in $tools; do
+			if [[ "$tool" = *"NeoVim"* ]]; then
+				sudo yum install neovim
+			fi
+
+			if [[ "$tool" = *"Docker"* ]]; then
+				sudo yum install docker docker-compose
+			fi
+
 			if [[ "$tool" = *"GitHub"* ]]; then
 				sudo yum install gh
 			fi
@@ -499,12 +515,15 @@ elif [ "$platform" = "darwin" ]; then
 	done
 
 	for tool in $tools; do
-		if [[ "$tools" = *"Docker"* ]]; then
-			brew cask install docker
-			brew install hadolint
+		if [[ "$tool" = *"NeoVim"* ]]; then
+			brew install neovim
 		fi
 
-		if [[ "$tools" = *"Makefile"* ]]; then
+		if [[ "$tool" = *"Docker"* ]]; then
+			brew install docker docker-compose hadolint
+		fi
+
+		if [[ "$tool" = *"Makefile"* ]]; then
 			brew install checkmake
 		fi
 
