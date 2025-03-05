@@ -50,6 +50,8 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - Ollama
 - Terminal tools
 - Nap
+- Typer
+- GitFlow
 - LSP
 - Tetris
 - Snake
