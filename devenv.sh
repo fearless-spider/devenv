@@ -340,6 +340,9 @@ if [ "$platform" = "linux" ]; then
 		done
 
 		for game in $games; do
+			if [[ "$game" = *"Tetris"* ]]; then
+				echo "Not supported"
+			fi
 		done
 
 	elif [ "$distro" = "Fedora Linux" ]; then
