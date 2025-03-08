@@ -53,13 +53,16 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - Typer
 - GitFlow
 - LSP
+
+### Games
+
 - Tetris
 - Snake
 
 ## 📖 Usage
 
 ```shell
-sh devenv.sh
+./devenv.sh
 ```
 
 ## :seedling: TODO

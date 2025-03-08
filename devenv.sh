@@ -4,6 +4,7 @@ echo "DEVENV.sh - A glamorous shell scripts to install development tools, librar
 echo "Programming languages: Python, Elixir, Erlang, Ruby, Rust, Go, Lua, R-lang, JavaScript, TypeScript, Haskell, Perl, Java, Julia, C/C++, Bash, PHP"
 echo "Databases: PostgreSQL, MongoDB, SQLite, MySQL"
 echo "Tools: Disk, Ngrok, Terminal, Cava, GitHub, IRC, Ollama"
+echo "Games: Tetris, Snake"
 
 platform='unknown'
 distro='unknown'
@@ -50,7 +51,7 @@ if [ "$platform" = "linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update
 		sudo yum groupinstall "Development Tools"
-		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel
+		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel ncurses-libs.i686 libyaml-devel
 		echo '[charm]
 		name=Charm
 		baseurl=https://repo.charm.sh/yum/
@@ -72,13 +73,16 @@ gum style \
 	'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
 
 AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
-p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "What programming language(s) do you need?")
+p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "Which programming language(s) do you need?")
 
 AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
-databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "What database(s) do you need?")
+databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
 
 AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Email" "Disk" "Terminal" "Cava")
-tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 9 --header "What tool(s) do you need?")
+tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 9 --header "Which tool(s) do you need?")
+
+AVAILABLE_GAMES=("Snake" "Tetris")
+games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
 
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
@@ -190,10 +194,6 @@ if [ "$platform" = "linux" ]; then
 				sudo pacman -S checkmake
 			fi
 
-			if [[ "$tool" = *"Games"* ]]; then
-				yay -S tetris-terminal-git
-			fi
-
 			if [[ "$tool" = *"Cava"* ]]; then
 				sudo pacman -S fftw ncurses espeak-ng portaudio
 				yay -S cava
@@ -213,6 +213,12 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+		done
+
+		for game in $games; do
+			if [[ "$game" = *"Games"* ]]; then
+				yay -S tetris-terminal-git
 			fi
 		done
 
@@ -333,6 +339,9 @@ if [ "$platform" = "linux" ]; then
 			fi
 		done
 
+		for game in $games; do
+		done
+
 	elif [ "$distro" = "Fedora Linux" ]; then
 
 		for p_language in $p_languages; do
@@ -349,7 +358,7 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo yum install libyaml-devel ruby ruby-devel rubygems
+				sudo yum install ruby ruby-devel rubygems
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
@@ -368,7 +377,7 @@ if [ "$platform" = "linux" ]; then
 				sudo yum install R
 			fi
 
-			if [[ "$p_language" = *"JavaScript"* ]]; then
+			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 				sudo yum install nodejs npm
 				sudo npm install -g nvm prettier
 			fi
@@ -416,7 +425,11 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
-				sudo yum install docker docker-compose
+				sudo dnf -y install dnf-plugins-core
+				sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+				sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+				sudo usermod -aG docker $USER
+				systemctl enable --now docker
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
@@ -424,7 +437,7 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo yum install ncurses-libs.i686 espeak-ng cava
+				sudo yum install espeak-ng cava
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
@@ -433,6 +446,12 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+		done
+
+		for game in $games; do
+			if [[ "$game" = *"Tetris"* ]]; then
+				echo "Not supported"
 			fi
 		done
 	fi
@@ -556,6 +575,12 @@ elif [ "$platform" = "darwin" ]; then
 		fi
 	done
 
+	for game in $games; do
+		if [[ "$game" = *"Tetris"* ]]; then
+			brew install samtay/tui/tetris
+		fi
+	done
+
 	export LIBTOOL='which glibtool'
 	export LIBTOOLIZE='which glibtoolize'
 	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
@@ -582,12 +607,17 @@ fi
 if [[ "$p_languages" = *"Go"* ]]; then
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
 	go install github.com/maaslalani/nap@main
-	go install github.com/DyegoCosta/snake-game@latest
 	go install github.com/maaslalani/typer@latest
 	go install github.com/mritd/gitflow-toolkit/v2@latest
 
 	sudo gitflow-toolkit install
 fi
+
+for game in $games; do
+	if [[ "$game" = *"Snake"* ]]; then
+		go install github.com/DyegoCosta/snake-game@latest
+	fi
+done
 
 if [[ "$tools" = *"GitHub"* ]]; then
 	gh extension install dlvhdr/gh-dash
