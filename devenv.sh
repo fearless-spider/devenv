@@ -190,6 +190,10 @@ if [ "$platform" = "linux" ]; then
 				newgrp docker
 			fi
 
+			if [[ "$tool" = *"GitHub"* ]]; then
+				sudo pacman -S github-cli
+			fi
+
 			if [[ "$tool" = *"Makefile"* ]]; then
 				sudo pacman -S checkmake
 			fi
@@ -328,6 +332,10 @@ if [ "$platform" = "linux" ]; then
 
 				# Limit log size to avoid running out of disk
 				echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
+			fi
+
+			if [[ "$tool" = *"GitHub"* ]]; then
+				sudo apt install gh
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
@@ -545,12 +553,12 @@ elif [ "$platform" = "darwin" ]; then
 			brew install docker docker-compose hadolint
 		fi
 
-		if [[ "$tool" = *"Makefile"* ]]; then
-			brew install checkmake
-		fi
-
 		if [[ "$tool" = *"GitHub"* ]]; then
 			brew install gh gitlint
+		fi
+
+		if [[ "$tool" = *"Makefile"* ]]; then
+			brew install checkmake
 		fi
 
 		if [[ "$tool" = *"Cava"* ]]; then
