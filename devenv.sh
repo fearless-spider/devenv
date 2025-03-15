@@ -342,6 +342,10 @@ if [ "$platform" = "linux" ]; then
 				sudo apt-get install espeak-ng cava
 			fi
 
+			if [[ "$tool" = *"Disk"* ]]; then
+				sudo apt-get install ncdu
+			fi
+
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
@@ -449,6 +453,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Cava"* ]]; then
 				sudo yum install espeak-ng cava
+			fi
+
+			if [[ "$tool" = *"Disk"* ]]; then
+				sudo yum install ncdu
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
