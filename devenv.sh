@@ -230,45 +230,45 @@ if [ "$platform" = "linux" ]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
-				sudo apt-get install python3-full python3-pip
+				sudo apt install python3-full python3-pip
 			fi
 
 			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
-				sudo apt-get install erlang rebar3 # elixir-ls
+				sudo apt install erlang rebar3 # elixir-ls
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo apt-get install elixir # elixir-ls
+				sudo apt install elixir # elixir-ls
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo apt-get install ruby-full
+				sudo apt install ruby-full
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
 				curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-				sudo apt-get install rust-analyzer
+				sudo apt install rust-analyzer
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
-				sudo apt-get install golang-go gopls
+				sudo apt install golang-go gopls
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
-				sudo apt-get install lua5.4 luarocks # lua-language-server
+				sudo apt install lua5.4 luarocks # lua-language-server
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
-				sudo apt-get install r-base
+				sudo apt install r-base
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
-				sudo apt-get install nodejs npm
+				sudo apt install nodejs npm
 				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
-				sudo apt-get install node-typescript
+				sudo apt install node-typescript
 
 			fi
 
@@ -278,11 +278,11 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
-				sudo apt-get install perl perl-perl-languageserver
+				sudo apt install perl perl-perl-languageserver
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
-				sudo apt-get install default-jdk gradle
+				sudo apt install default-jdk gradle
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
@@ -296,25 +296,25 @@ if [ "$platform" = "linux" ]; then
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
-				sudo apt-get install postgresql
+				sudo apt install postgresql
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
-				sudo apt-get install sqlite
+				sudo apt install sqlite
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
 				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
 				sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-				sudo apt-get update
-				sudo apt-get install -y mongodb-org
+				sudo apt update
+				sudo apt install -y mongodb-org
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
-				sudo apt-get install neovim
+				sudo apt install neovim
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
@@ -339,11 +339,20 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo apt-get install espeak-ng cava
+				sudo apt install espeak-ng cava
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
-				sudo apt-get install ncdu
+				sudo apt install ncdu
+			fi
+
+			if [[ "$tool" = *"Ngrok"* ]]; then
+				curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc |
+					sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null &&
+					echo "deb https://ngrok-agent.s3.amazonaws.com buster main" |
+					sudo tee /etc/apt/sources.list.d/ngrok.list &&
+					sudo apt update &&
+					sudo apt install ngrok
 			fi
 
 			if [[ "$tool" = *"Ollama"* ]]; then
@@ -457,6 +466,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Disk"* ]]; then
 				sudo yum install ncdu
+			fi
+
+			if [[ "$tool" = *"Ngrok"* ]]; then
+				echo "Not supported"
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
@@ -575,6 +588,10 @@ elif [ "$platform" = "darwin" ]; then
 
 		if [[ "$tool" = *"Disk"* ]]; then
 			brew install ncdu
+		fi
+
+		if [[ "$tool" = *"Ngrok"* ]]; then
+			brew install ngrok
 		fi
 
 		if [[ "$tool" = *"Terminal"* ]]; then
