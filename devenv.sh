@@ -215,6 +215,10 @@ if [ "$platform" = "linux" ]; then
 				yay -S ngrok
 			fi
 
+			if [[ "$tool" = *"IRC"* ]]; then
+				sudo pacman install irssi
+			fi
+
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
@@ -355,6 +359,10 @@ if [ "$platform" = "linux" ]; then
 					sudo apt install ngrok
 			fi
 
+			if [[ "$tool" = *"IRC"* ]]; then
+				sudo apt install irssi
+			fi
+
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
@@ -470,6 +478,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
 				echo "Not supported"
+			fi
+
+			if [[ "$tool" = *"IRC"* ]]; then
+				sudo yum install irssi
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
