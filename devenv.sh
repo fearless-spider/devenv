@@ -342,6 +342,10 @@ if [ "$platform" = "linux" ]; then
 				sudo apt install gh
 			fi
 
+			if [[ "$tool" = *"Makefile"* ]]; then
+				sudo apt install checkmake
+			fi
+
 			if [[ "$tool" = *"Cava"* ]]; then
 				sudo apt install espeak-ng cava
 			fi
@@ -466,6 +470,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"GitHub"* ]]; then
 				sudo yum install gh
+			fi
+
+			if [[ "$tool" = *"Makefile"* ]]; then
+				sudo yum install checkmake
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
