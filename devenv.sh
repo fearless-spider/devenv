@@ -177,6 +177,10 @@ if [ "$platform" = "linux" ]; then
 			if [[ "$database" = *"MongoDB"* ]]; then
 				yay -S mongodb-bin mongodb-tools-bin mongosh-bin
 			fi
+
+			if [[ "$database" = *"MySQL"* ]]; then
+				sudo pacman -S mysql
+			fi
 		done
 
 		for tool in $tools; do
@@ -313,6 +317,10 @@ if [ "$platform" = "linux" ]; then
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 				sudo apt update
 				sudo apt install -y mongodb-org
+			fi
+
+			if [[ "$database" = *"MySQL"* ]]; then
+				sudo apt install mysql-server
 			fi
 		done
 
@@ -453,6 +461,10 @@ if [ "$platform" = "linux" ]; then
 			if [[ "$database" = *"MongoDB"* ]]; then
 				echo "Not supported"
 			fi
+
+			if [[ "$database" = *"MySQL"* ]]; then
+				sudo yum install mysql-server
+			fi
 		done
 
 		for tool in $tools; do
@@ -582,6 +594,10 @@ elif [ "$platform" = "darwin" ]; then
 		if [[ "$database" = *"MongoDB"* ]]; then
 			brew tap mongodb/brew
 			brew install mongodb/brew/mongodb-community
+		fi
+
+		if [[ "$database" = *"MySQL"* ]]; then
+			brew install mysql
 		fi
 	done
 
