@@ -223,6 +223,10 @@ if [ "$platform" = "linux" ]; then
 				sudo pacman install irssi
 			fi
 
+			if [[ "$tool" = *"Email"* ]]; then
+				echo "Not supported"
+			fi
+
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
@@ -375,6 +379,10 @@ if [ "$platform" = "linux" ]; then
 				sudo apt install irssi
 			fi
 
+			if [[ "$tool" = *"Email"* ]]; then
+				echo "Not supported"
+			fi
+
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
@@ -506,6 +514,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Qemu"* ]]; then
 				sudo yum install qemu-kvm bridge-utils libvirt virt-install
+			fi
+
+			if [[ "$tool" = *"Email"* ]]; then
+				echo "Not supported"
 			fi
 
 			if [[ "$tool" = *"Ollama"* ]]; then
