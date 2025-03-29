@@ -223,6 +223,10 @@ if [ "$platform" = "linux" ]; then
 				sudo pacman install irssi
 			fi
 
+			if [[ "$tool" = *"Qemu"* ]]; then
+				sudo pacman install qemu-full
+			fi
+
 			if [[ "$tool" = *"Email"* ]]; then
 				echo "Not supported"
 			fi
@@ -377,6 +381,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"IRC"* ]]; then
 				sudo apt install irssi
+			fi
+
+			if [[ "$tool" = *"Qemu"* ]]; then
+				sudo apt install qemu-system
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -648,6 +656,10 @@ elif [ "$platform" = "darwin" ]; then
 
 		if [[ "$tool" = *"IRC"* ]]; then
 			brew install irssi
+		fi
+
+		if [[ "$tool" = *"Qemu"* ]]; then
+			brew install qemu libvirt
 		fi
 
 		if [[ "$tool" = *"Email"* ]]; then
