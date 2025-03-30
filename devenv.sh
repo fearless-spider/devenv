@@ -78,7 +78,7 @@ p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --he
 AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
 databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
 
-AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Email" "Disk" "Terminal" "Cava")
+AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama")
 tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 9 --header "Which tool(s) do you need?")
 
 AVAILABLE_GAMES=("Snake" "Tetris")

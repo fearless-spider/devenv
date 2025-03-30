@@ -1,6 +1,6 @@
 # devenv
 
-A glamorous shell scripts to install development tools, libraries,.. on :
+A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to install development tools, libraries,.. on :
 
 ![devenv usage](https://github.com/fearless-spider/devenv/blob/main/devenv_gum_2.png?raw=true)
 
@@ -37,6 +37,7 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 - PostgreSQL
 - SQLite
 - MongoDB
+- MySQL
 
 ### Tools
 
@@ -67,7 +68,6 @@ A glamorous shell scripts to install development tools, libraries,.. on :
 
 ## :seedling: TODO
 
-- MariaDB
 - Redis
 
 ## 🤝 Contributing
