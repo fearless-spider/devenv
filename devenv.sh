@@ -78,7 +78,7 @@ p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --he
 AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
 databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
 
-AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama")
+AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama" "Redis")
 tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 9 --header "Which tool(s) do you need?")
 
 AVAILABLE_GAMES=("Snake" "Tetris")
@@ -212,7 +212,7 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Terminal"* ]]; then
-				sudo pacman -S ripgrep fd lazygit tmux github-cli
+				sudo pacman -S ripgrep fd lazygit tmux
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
@@ -233,6 +233,10 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+
+			if [[ "$tool" = *"Redis"* ]]; then
+				sudo pacman install redis
 			fi
 		done
 
@@ -394,6 +398,15 @@ if [ "$platform" = "linux" ]; then
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
+
+			if [[ "$tool" = *"Redis"* ]]; then
+				sudo apt-get install lsb-release curl gpg
+				curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+				sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+				echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+				sudo apt-get update
+				sudo apt-get install redis
+			fi
 		done
 
 		for game in $games; do
@@ -531,6 +544,10 @@ if [ "$platform" = "linux" ]; then
 			if [[ "$tool" = *"Ollama"* ]]; then
 				curl -fsSL https://ollama.com/install.sh | sh
 			fi
+
+			if [[ "$tool" = *"Redis"* ]]; then
+				sudo yum install redis
+			fi
 		done
 
 		for game in $games; do
@@ -631,7 +648,7 @@ elif [ "$platform" = "darwin" ]; then
 		fi
 
 		if [[ "$tool" = *"GitHub"* ]]; then
-			brew install gh gitlint
+			brew install gh gitlint github-cli
 		fi
 
 		if [[ "$tool" = *"Makefile"* ]]; then
@@ -651,7 +668,7 @@ elif [ "$platform" = "darwin" ]; then
 		fi
 
 		if [[ "$tool" = *"Terminal"* ]]; then
-			brew install ripgrep fd lazygit tmux github-cli powerlevel10k circumflex
+			brew install ripgrep fd lazygit tmux powerlevel10k circumflex
 		fi
 
 		if [[ "$tool" = *"IRC"* ]]; then
@@ -668,6 +685,10 @@ elif [ "$platform" = "darwin" ]; then
 
 		if [[ "$tool" = *"Ollama"* ]]; then
 			echo "Please download it from https://ollama.com/download/mac"
+		fi
+
+		if [[ "$tool" = *"Redis"* ]]; then
+			brew install redis
 		fi
 	done
 

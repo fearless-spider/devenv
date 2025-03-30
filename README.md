@@ -44,21 +44,25 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - NeoVim
 - Docker
 - GitHub
+- Makefile
 - Email
 - IRC
 - Disk
 - Cava
 - Ollama
-- Terminal tools
-- Nap
-- Typer
+- Terminal tools : nap, typer, fzf, fd, lazygit, tmux
 - GitFlow
-- LSP
+- Redis
 
 ### Games
 
 - Tetris
 - Snake
+
+### Extras
+
+- LSP
+- Formatters
 
 ## 📖 Usage
 
@@ -68,7 +72,7 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 
 ## :seedling: TODO
 
-- Redis
+Suggestions?
 
 ## 🤝 Contributing
 
