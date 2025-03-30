@@ -648,7 +648,7 @@ elif [ "$platform" = "darwin" ]; then
 		fi
 
 		if [[ "$tool" = *"GitHub"* ]]; then
-			brew install gh gitlint github-cli
+			brew install gh gitlint
 		fi
 
 		if [[ "$tool" = *"Makefile"* ]]; then
