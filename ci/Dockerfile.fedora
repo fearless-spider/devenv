@@ -8,12 +8,7 @@ RUN dnf update -y && \
     dnf clean all
 
 # Install gum
-RUN echo '[charm]
-name=Charm
-baseurl=https://repo.charm.sh/yum/
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.charm.sh/yum/gpg.key' > /etc/yum.repos.d/charm.repo && \
+RUN printf '[charm]\nname=Charm\nbaseurl=https://repo.charm.sh/yum/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key\n' > /etc/yum.repos.d/charm.repo && \
     rpm --import https://repo.charm.sh/yum/gpg.key && \
     dnf install -y gum && \
     dnf clean all
