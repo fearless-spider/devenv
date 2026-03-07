@@ -1,7 +1,7 @@
 FROM fedora:41
 
 RUN dnf update -y && \
-    dnf groupinstall -y "Development Tools" && \
+    dnf group install -y "Development Tools" && \
     dnf install -y \
     sudo curl git readline readline-devel libtool automake \
     zlib-devel bzip2 ncurses-devel libyaml-devel && \

@@ -122,7 +122,7 @@ if [ "$platform" = "linux" ]; then
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update -y
-		sudo yum groupinstall -y "Development Tools"
+		sudo yum group install -y "Development Tools"
 		sudo yum install -y readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel ncurses-libs.i686 libyaml-devel
 		echo '[charm]
 		name=Charm
