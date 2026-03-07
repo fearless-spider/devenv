@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 echo "DEVENV.sh - A glamorous shell scripts to install development tools, libraries,.. on Arch, Fedora, Ubuntu and MacOSX "
 echo "Programming languages: Python, Elixir, Erlang, Ruby, Rust, Go, Lua, R-lang, JavaScript, TypeScript, Haskell, Perl, Java, Julia, C/C++, Bash, PHP"
@@ -31,15 +32,14 @@ fi
 echo "Installing base packages"
 
 if [ "$platform" = "linux" ]; then
-	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
 
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
-		sudo pacman -Syu
+		sudo pacman -Syu --noconfirm
 		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake gum
 	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
-		sudo apt-get upgrade
+		sudo apt-get upgrade -y
 		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
 			libreadline-dev libedit-dev libssl-dev \
 			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
@@ -49,7 +49,7 @@ if [ "$platform" = "linux" ]; then
 		sudo apt update && sudo apt install gum
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
-		sudo yum update
+		sudo yum update -y
 		sudo yum groupinstall "Development Tools"
 		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel ncurses-libs.i686 libyaml-devel
 		echo '[charm]
@@ -85,8 +85,6 @@ AVAILABLE_GAMES=("Snake" "Tetris")
 games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
 
 if [ "$platform" = "linux" ]; then
-	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
-	echo "Determined platform: $distro"
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 
 		for p_language in $p_languages; do
@@ -284,7 +282,7 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 				sudo apt install nodejs npm
-				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
@@ -700,13 +698,13 @@ elif [ "$platform" = "darwin" ]; then
 
 	export LIBTOOL=$(which glibtool)
 	export LIBTOOLIZE=$(which glibtoolize)
-	ln -s $(which glibtoolize) /usr/local/bin/libtoolize
-	ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
+	ln -sf $(which glibtoolize) /usr/local/bin/libtoolize
+	ln -sf /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
 if [[ "$p_languages" = *"Ruby"* ]]; then
-	sudo gem update
-	sudo gem install solargraph rubocop neovim tmuxinator
+	gem update --user-install
+	gem install --user-install solargraph rubocop neovim tmuxinator
 fi
 
 if [[ "$p_languages" = *"Python"* ]]; then
@@ -741,7 +739,7 @@ if [[ "$tools" = *"GitHub"* ]]; then
 fi
 
 if [[ "$p_languages" = *"JavaScript"* || "$p_languages" = *"TypeScript"* ]]; then
-	sudo npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
+	npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
 		fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
 		sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
 		neovim gulp

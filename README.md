@@ -9,11 +9,11 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - Arch Linux
 - Fedora Linux
 - Ubuntu Linux
-- MacOSX
+- macOS
 
 ## 🚀 Features
 
-### Programmin languages
+### Programming languages
 
 - C/C++
 - Rust
@@ -50,7 +50,7 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - Disk
 - Cava
 - Ollama
-- Terminal tools : nap, typer, fzf, fd, lazygit, tmux
+- Terminal tools : nap, typer, fd, lazygit, tmux
 - GitFlow
 - Redis
 

@@ -8,11 +8,12 @@ RUN echo "spider ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN chown -R spider:wheel /usr/local/src/
 
 USER spider
-CMD /bin/bash
 
 WORKDIR /home/spider
 
 COPY . /app
 WORKDIR /app
 
-RUN sh tests/devenv.sh
+RUN sh devenv.sh
+
+CMD /bin/bash
