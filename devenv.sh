@@ -123,12 +123,7 @@ if [ "$platform" = "linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update -y
 		sudo yum install -y gcc gcc-c++ make readline readline-devel libtool automake zlib-devel bzip2 ncurses-devel libyaml-devel
-		echo '[charm]
-		name=Charm
-		baseurl=https://repo.charm.sh/yum/
-		enabled=1
-		gpgcheck=1
-		gpgkey=https://repo.charm.sh/yum/gpg.key' | sudo tee /etc/yum.repos.d/charm.repo
+		printf '[charm]\nname=Charm\nbaseurl=https://repo.charm.sh/yum/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key\n' | sudo tee /etc/yum.repos.d/charm.repo
 		sudo rpm --import https://repo.charm.sh/yum/gpg.key
 		sudo yum install -y gum
 	fi
