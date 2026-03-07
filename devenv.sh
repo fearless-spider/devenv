@@ -116,7 +116,7 @@ if [ "$platform" = "linux" ]; then
 			libreadline-dev libedit-dev libssl-dev \
 			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
 		sudo mkdir -p /etc/apt/keyrings
-		curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+		curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --batch --dearmor -o /etc/apt/keyrings/charm.gpg
 		echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
 		sudo apt update && sudo apt install -y gum
 	elif [ "$distro" = "Fedora Linux" ]; then
@@ -440,7 +440,7 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$database" = *"MongoDB"* ]]; then
 				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
-				  sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+				  sudo gpg --batch --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 				sudo apt update
 				sudo apt install -y mongodb-org
@@ -527,7 +527,7 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Redis"* ]]; then
 				sudo apt-get install -y lsb-release curl gpg
-				curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+				curl -fsSL https://packages.redis.io/gpg | sudo gpg --batch --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 				sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
 				echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 				sudo apt-get update
