@@ -910,7 +910,7 @@ if [[ "$p_languages" = *"Go"* ]]; then
 	go install github.com/maaslalani/typer@latest
 	go install github.com/mritd/gitflow-toolkit/v2@latest
 
-	sudo gitflow-toolkit install
+	[[ "$CI_MODE" = false ]] && sudo "$(go env GOPATH)/bin/gitflow-toolkit" install || true
 fi
 
 for game in $games; do
