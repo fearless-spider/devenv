@@ -90,13 +90,13 @@ elif [ "$unamestr" = 'Darwin' ]; then
 	platform='darwin'
 fi
 
-if [ -n "$ZSH_VERSION" ]; then
+if [ -n "${ZSH_VERSION:-}" ]; then
 	shell='zsh'
-elif [ -n "$FISH_VERSION" ]; then
+elif [ -n "${FISH_VERSION:-}" ]; then
 	shell='fish'
 	curl -sL https://git.io/fisher | . && fisher install jorgebucaran/fisher
 	fisher install reitzig/sdkman-for-fish@v1.4.0
-elif [ -n "$BASH_VERSION" ]; then
+elif [ -n "${BASH_VERSION:-}" ]; then
 	shell='bash'
 fi
 
