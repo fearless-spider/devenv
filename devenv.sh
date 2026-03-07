@@ -108,11 +108,11 @@ if [ "$platform" = "linux" ]; then
 
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 		sudo pacman -Syu --noconfirm
-		sudo pacman -S base-devel git curl openssl readline xz zlib libtool automake gum
+		sudo pacman -S --noconfirm base-devel git curl openssl readline xz zlib libtool automake gum
 	elif [ "$distro" = "Ubuntu" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade -y
-		sudo apt-get install build-essential git curl libfftw3-dev libyaml-dev \
+		sudo apt-get install -y build-essential git curl libfftw3-dev libyaml-dev \
 			libreadline-dev libedit-dev libssl-dev \
 			libasound2-dev libncursesw5-dev libpulse-dev libtool automake
 		sudo mkdir -p /etc/apt/keyrings
@@ -122,8 +122,8 @@ if [ "$platform" = "linux" ]; then
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update -y
-		sudo yum groupinstall "Development Tools"
-		sudo yum install readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel ncurses-libs.i686 libyaml-devel
+		sudo yum groupinstall -y "Development Tools"
+		sudo yum install -y readline readline-devel libtool automake zlib.i686 bzip2-libs.i686 ncurses-devel ncurses-libs.i686 libyaml-devel
 		echo '[charm]
 		name=Charm
 		baseurl=https://repo.charm.sh/yum/
