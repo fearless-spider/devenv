@@ -1,10 +1,10 @@
 FROM fedora:41
 
 RUN dnf update -y && \
-    dnf group install -y "Development Tools" && \
     dnf install -y \
-    sudo curl git readline readline-devel libtool automake \
-    zlib-devel bzip2 ncurses-devel libyaml-devel && \
+    sudo gcc gcc-c++ make git curl \
+    readline readline-devel libtool automake \
+    zlib-devel bzip2 ncurses-devel && \
     dnf clean all
 
 # Install gum
