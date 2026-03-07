@@ -901,11 +901,13 @@ fi
 
 if [[ "$p_languages" = *"Go"* ]]; then
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
-	go install github.com/maaslalani/nap@main
-	go install github.com/maaslalani/typer@latest
-	go install github.com/mritd/gitflow-toolkit/v2@latest
 
-	[[ "$CI_MODE" = false ]] && sudo "$(go env GOPATH)/bin/gitflow-toolkit" install || true
+	if [[ "$CI_MODE" = false ]]; then
+		go install github.com/maaslalani/nap@main
+		go install github.com/maaslalani/typer@latest
+		go install github.com/mritd/gitflow-toolkit/v2@latest
+		sudo "$(go env GOPATH)/bin/gitflow-toolkit" install
+	fi
 fi
 
 for game in $games; do
