@@ -118,7 +118,7 @@ if [ "$platform" = "linux" ]; then
 		sudo mkdir -p /etc/apt/keyrings
 		curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
 		echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-		sudo apt update && sudo apt install gum
+		sudo apt update && sudo apt install -y gum
 	elif [ "$distro" = "Fedora Linux" ]; then
 		# chown -R $USER /usr/local/lib
 		sudo yum update -y
@@ -131,7 +131,7 @@ if [ "$platform" = "linux" ]; then
 		gpgcheck=1
 		gpgkey=https://repo.charm.sh/yum/gpg.key' | sudo tee /etc/yum.repos.d/charm.repo
 		sudo rpm --import https://repo.charm.sh/yum/gpg.key
-		sudo yum install gum
+		sudo yum install -y gum
 	fi
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
@@ -169,40 +169,40 @@ if [ "$platform" = "linux" ]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
-				sudo pacman -S python python-pip python-pipx
+				sudo pacman -S --noconfirm python python-pip python-pipx
 				recordInstall "Python" "python python-pip python-pipx"
 			fi
 
 			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
-				sudo pacman -S erlang
+				sudo pacman -S --noconfirm erlang
 				yay -S rebar3
 				recordInstall "Erlang" "erlang rebar3"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo pacman -S elixir
+				sudo pacman -S --noconfirm elixir
 				yay -S elixir-ls
 				recordInstall "Elixir" "elixir elixir-ls"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo pacman -S ruby
+				sudo pacman -S --noconfirm ruby
 				yay -S rbenv
 				recordInstall "Ruby" "ruby rbenv"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
-				sudo pacman -S rust rust-analyzer cargo
+				sudo pacman -S --noconfirm rust rust-analyzer cargo
 				recordInstall "Rust" "rust rust-analyzer cargo"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
-				sudo pacman -S go gopls
+				sudo pacman -S --noconfirm go gopls
 				recordInstall "Go" "go gopls"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
-				sudo pacman -S lua luarocks lua-language-server
+				sudo pacman -S --noconfirm lua luarocks lua-language-server
 				recordInstall "Lua" "lua luarocks lua-language-server"
 			fi
 
@@ -212,62 +212,62 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
-				sudo pacman -S nodejs npm prettier
+				sudo pacman -S --noconfirm nodejs npm prettier
 				yay -S nvm
 				recordInstall "JavaScript" "nodejs npm prettier nvm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
-				sudo pacman -S typescript
+				sudo pacman -S --noconfirm typescript
 				recordInstall "TypeScript" "typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
-				sudo pacman -S ghc haskell-language-server cabal-install
+				sudo pacman -S --noconfirm ghc haskell-language-server cabal-install
 				recordInstall "Haskell" "ghc haskell-language-server cabal-install"
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
-				sudo pacman -S perl
+				sudo pacman -S --noconfirm perl
 				yay -S perl-perl-languageserver
 				recordInstall "Perl" "perl perl-perl-languageserver"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
-				sudo pacman -S jdk-openjdk gradle maven
+				sudo pacman -S --noconfirm jdk-openjdk gradle maven
 				recordInstall "Java" "jdk-openjdk gradle maven"
 			fi
 
 			if [[ "$p_language" = *"Julia"* ]]; then
-				sudo pacman -S julia
+				sudo pacman -S --noconfirm julia
 				recordInstall "Julia" "julia"
 			fi
 
 			if [[ "$p_language" = *"Bash"* ]]; then
-				sudo pacman -S bash-language-server shfmt shellcheck
+				sudo pacman -S --noconfirm bash-language-server shfmt shellcheck
 				recordInstall "Bash" "bash-language-server shfmt shellcheck"
 			fi
 
 			if [[ "$p_language" = *"C/C++"* ]]; then
-				sudo pacman -S cppcheck astyle iniparser
+				sudo pacman -S --noconfirm cppcheck astyle iniparser
 				yay -S cmake-language-server
 				recordInstall "C/C++" "cppcheck astyle iniparser cmake-language-server"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
-				sudo pacman -S php composer
+				sudo pacman -S --noconfirm php composer
 				recordInstall "PHP" "php composer"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
-				sudo pacman -S postgresql
+				sudo pacman -S --noconfirm postgresql
 				recordInstall "PostgreSQL" "postgresql"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
-				sudo pacman -S sqlite
+				sudo pacman -S --noconfirm sqlite
 				recordInstall "SQLite" "sqlite"
 			fi
 
@@ -277,44 +277,44 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
-				sudo pacman -S mysql
+				sudo pacman -S --noconfirm mysql
 				recordInstall "MySQL" "mysql"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
-				sudo pacman -S neovim
+				sudo pacman -S --noconfirm neovim
 				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
-				sudo pacman -S docker docker-buildx docker-compose containerd
+				sudo pacman -S --noconfirm docker docker-buildx docker-compose containerd
 				sudo usermod -aG docker $USER
 				newgrp docker
 				recordInstall "Docker" "docker docker-buildx docker-compose containerd"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
-				sudo pacman -S github-cli
+				sudo pacman -S --noconfirm github-cli
 				recordInstall "GitHub" "github-cli"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
-				sudo pacman -S checkmake
+				sudo pacman -S --noconfirm checkmake
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo pacman -S fftw ncurses espeak-ng portaudio
+				sudo pacman -S --noconfirm fftw ncurses espeak-ng portaudio
 				yay -S cava
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
-				sudo pacman -S ncdu
+				sudo pacman -S --noconfirm ncdu
 			fi
 
 			if [[ "$tool" = *"Terminal"* ]]; then
-				sudo pacman -S ripgrep fd lazygit tmux
+				sudo pacman -S --noconfirm ripgrep fd lazygit tmux
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
@@ -322,11 +322,11 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
-				sudo pacman -S irssi
+				sudo pacman -S --noconfirm irssi
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
-				sudo pacman -S qemu-full
+				sudo pacman -S --noconfirm qemu-full
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -338,7 +338,7 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Redis"* ]]; then
-				sudo pacman -S redis
+				sudo pacman -S --noconfirm redis
 			fi
 		done
 
@@ -352,54 +352,54 @@ if [ "$platform" = "linux" ]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
-				sudo apt install python3-full python3-pip
+				sudo apt install -y python3-full python3-pip
 				recordInstall "Python" "python3-full python3-pip"
 			fi
 
 			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
-				sudo apt install erlang rebar3 # elixir-ls
+				sudo apt install -y erlang rebar3 # elixir-ls
 				recordInstall "Erlang" "erlang rebar3"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo apt install elixir # elixir-ls
+				sudo apt install -y elixir # elixir-ls
 				recordInstall "Elixir" "elixir"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo apt install ruby-full
+				sudo apt install -y ruby-full
 				recordInstall "Ruby" "ruby-full"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
 				curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-				sudo apt install rust-analyzer
+				sudo apt install -y rust-analyzer
 				recordInstall "Rust" "rust-analyzer"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
-				sudo apt install golang-go gopls
+				sudo apt install -y golang-go gopls
 				recordInstall "Go" "golang-go gopls"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
-				sudo apt install lua5.4 luarocks # lua-language-server
+				sudo apt install -y lua5.4 luarocks # lua-language-server
 				recordInstall "Lua" "lua5.4 luarocks"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
-				sudo apt install r-base
+				sudo apt install -y r-base
 				recordInstall "R-lang" "r-base"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
-				sudo apt install nodejs npm
+				sudo apt install -y nodejs npm
 				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 				recordInstall "JavaScript" "nodejs npm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
-				sudo apt install node-typescript
+				sudo apt install -y node-typescript
 				recordInstall "TypeScript" "node-typescript"
 			fi
 
@@ -409,12 +409,12 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
-				sudo apt install perl perl-perl-languageserver
+				sudo apt install -y perl perl-perl-languageserver
 				recordInstall "Perl" "perl perl-perl-languageserver"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
-				sudo apt install default-jdk gradle
+				sudo apt install -y default-jdk gradle
 				recordInstall "Java" "default-jdk gradle"
 			fi
 
@@ -430,12 +430,12 @@ if [ "$platform" = "linux" ]; then
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
-				sudo apt install postgresql
+				sudo apt install -y postgresql
 				recordInstall "PostgreSQL" "postgresql"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
-				sudo apt install sqlite
+				sudo apt install -y sqlite
 				recordInstall "SQLite" "sqlite"
 			fi
 
@@ -449,14 +449,14 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
-				sudo apt install mysql-server
+				sudo apt install -y mysql-server
 				recordInstall "MySQL" "mysql-server"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
-				sudo apt install neovim
+				sudo apt install -y neovim
 				recordInstall "NeoVim" "neovim"
 			fi
 
@@ -479,22 +479,22 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
-				sudo apt install gh
+				sudo apt install -y gh
 				recordInstall "GitHub" "gh"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
-				sudo apt install checkmake
+				sudo apt install -y checkmake
 				recordInstall "Makefile" "checkmake"
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo apt install espeak-ng cava
+				sudo apt install -y espeak-ng cava
 				recordInstall "Cava" "espeak-ng cava"
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
-				sudo apt install ncdu
+				sudo apt install -y ncdu
 				recordInstall "Disk" "ncdu"
 			fi
 
@@ -504,17 +504,17 @@ if [ "$platform" = "linux" ]; then
 					echo "deb https://ngrok-agent.s3.amazonaws.com buster main" |
 					sudo tee /etc/apt/sources.list.d/ngrok.list &&
 					sudo apt update &&
-					sudo apt install ngrok
+					sudo apt install -y ngrok
 				recordInstall "Ngrok" "ngrok"
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
-				sudo apt install irssi
+				sudo apt install -y irssi
 				recordInstall "IRC" "irssi"
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
-				sudo apt install qemu-system
+				sudo apt install -y qemu-system
 				recordInstall "Qemu" "qemu-system"
 			fi
 
@@ -527,12 +527,12 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Redis"* ]]; then
-				sudo apt-get install lsb-release curl gpg
+				sudo apt-get install -y lsb-release curl gpg
 				curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 				sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
 				echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 				sudo apt-get update
-				sudo apt-get install redis
+				sudo apt-get install -y redis
 				recordInstall "Redis" "redis"
 			fi
 		done
@@ -547,87 +547,87 @@ if [ "$platform" = "linux" ]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
-				sudo yum install python-pip python-devel
+				sudo yum install -y python-pip python-devel
 				recordInstall "Python" "python-pip python-devel"
 			fi
 
 			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
-				sudo yum install erlang rebar
+				sudo yum install -y erlang rebar
 				recordInstall "Erlang" "erlang rebar"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo yum install elixir
+				sudo yum install -y elixir
 				recordInstall "Elixir" "elixir"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo yum install ruby ruby-devel rubygems
+				sudo yum install -y ruby ruby-devel rubygems
 				recordInstall "Ruby" "ruby ruby-devel rubygems"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
-				sudo yum install rust rust-analyzer cargo
+				sudo yum install -y rust rust-analyzer cargo
 				recordInstall "Rust" "rust rust-analyzer cargo"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
-				sudo yum install go
+				sudo yum install -y go
 				recordInstall "Go" "go"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
-				sudo yum install lua luarocks
+				sudo yum install -y lua luarocks
 				recordInstall "Lua" "lua luarocks"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
-				sudo yum install R
+				sudo yum install -y R
 				recordInstall "R-lang" "R"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
-				sudo yum install nodejs npm
+				sudo yum install -y nodejs npm
 				sudo npm install -g nvm prettier
 				recordInstall "JavaScript" "nodejs npm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
-				sudo yum install typescript
+				sudo yum install -y typescript
 				recordInstall "TypeScript" "typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
 				sudo dnf copr enable petersen/haskell-language-server
-				sudo yum install ghc-compiler haskell-language-server
+				sudo yum install -y ghc-compiler haskell-language-server
 				recordInstall "Haskell" "ghc-compiler haskell-language-server"
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
-				sudo yum install perl
+				sudo yum install -y perl
 				sudo cpan Perl::LanguageServer
 				recordInstall "Perl" "perl"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
-				sudo yum install java
+				sudo yum install -y java
 				recordInstall "Java" "java"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
-				sudo dnf install php-cli phpunit composer php-mysqli
+				sudo dnf install -y php-cli phpunit composer php-mysqli
 				recordInstall "PHP" "php-cli phpunit composer php-mysqli"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
-				sudo yum install postgresql-server postgresql postgresql-devel
+				sudo yum install -y postgresql-server postgresql postgresql-devel
 				recordInstall "PostgreSQL" "postgresql-server postgresql postgresql-devel"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
-				sudo yum install sqlite sqlite-devel
+				sudo yum install -y sqlite sqlite-devel
 				recordInstall "SQLite" "sqlite sqlite-devel"
 			fi
 
@@ -636,43 +636,43 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
-				sudo yum install mysql-server
+				sudo yum install -y mysql-server
 				recordInstall "MySQL" "mysql-server"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
-				sudo yum install neovim
+				sudo yum install -y neovim
 				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
 				sudo dnf -y install dnf-plugins-core
 				sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-				sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+				sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 				sudo usermod -aG docker $USER
 				systemctl enable --now docker
 				recordInstall "Docker" "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
-				sudo yum install gh
+				sudo yum install -y gh
 				recordInstall "GitHub" "gh"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
-				sudo yum install checkmake
+				sudo yum install -y checkmake
 				recordInstall "Makefile" "checkmake"
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo yum install espeak-ng cava
+				sudo yum install -y espeak-ng cava
 				recordInstall "Cava" "espeak-ng cava"
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
-				sudo yum install ncdu
+				sudo yum install -y ncdu
 				recordInstall "Disk" "ncdu"
 			fi
 
@@ -681,12 +681,12 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
-				sudo yum install irssi
+				sudo yum install -y irssi
 				recordInstall "IRC" "irssi"
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
-				sudo yum install qemu-kvm bridge-utils libvirt virt-install
+				sudo yum install -y qemu-kvm bridge-utils libvirt virt-install
 				recordInstall "Qemu" "qemu-kvm bridge-utils libvirt virt-install"
 			fi
 
@@ -699,7 +699,7 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Redis"* ]]; then
-				sudo yum install redis
+				sudo yum install -y redis
 				recordInstall "Redis" "redis"
 			fi
 		done
