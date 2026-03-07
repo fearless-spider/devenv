@@ -67,8 +67,12 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 ## 📖 Usage
 
 ```shell
-./devenv.sh
+./devenv.sh              # interactive mode (default)
+./devenv.sh --ci         # non-interactive CI smoke-test
+./devenv.sh --uninstall  # remove previously installed components
 ```
+
+Every run appends a session record to `~/.devenv_installed`.
 
 ## 🌱 TODO
 

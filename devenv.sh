@@ -8,8 +8,75 @@ echo "Tools: Disk, Ngrok, Terminal, Cava, GitHub, IRC, Ollama"
 echo "Games: Tetris, Snake"
 
 CI_MODE=false
-if [[ "${1:-}" = "--ci" ]]; then
-  CI_MODE=true
+UNINSTALL_MODE=false
+
+for arg in "${@}"; do
+  case "$arg" in
+    --ci)         CI_MODE=true ;;
+    --uninstall)  UNINSTALL_MODE=true ;;
+  esac
+done
+
+# ─── Install log ──────────────────────────────────────────────────────────────
+DEVENV_LOG="${HOME}/.devenv_installed"
+
+# Append one tracked entry: recordInstall "Python" "python python-pip python-pipx"
+recordInstall() {
+  local component="$1" packages="$2"
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)|${distro}|${component}|${packages}" >> "${DEVENV_LOG}"
+}
+
+# Serialise the full selection set after a run
+persistInstallRecord() {
+  local ts; ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  echo "# session ${ts} | distro=${distro} | platform=${platform}" >> "${DEVENV_LOG}"
+  echo "LANGUAGES=${p_languages//$'\n'/,}"  >> "${DEVENV_LOG}"
+  echo "DATABASES=${databases//$'\n'/,}"   >> "${DEVENV_LOG}"
+  echo "TOOLS=${tools//$'\n'/,}"           >> "${DEVENV_LOG}"
+  echo "GAMES=${games//$'\n'/,}"           >> "${DEVENV_LOG}"
+  echo "---"                               >> "${DEVENV_LOG}"
+}
+
+# ─── Uninstall handler ────────────────────────────────────────────────────────
+if [[ "$UNINSTALL_MODE" = true ]]; then
+  if [[ ! -f "${DEVENV_LOG}" ]]; then
+    echo "No install record found at ${DEVENV_LOG}" && exit 1
+  fi
+
+  # Collect unique component|packages pairs from log
+  mapfile -t entries < <(grep -v '^#' "${DEVENV_LOG}" | grep -v '^---' | grep -v '^[A-Z]')
+  if [[ ${#entries[@]} -eq 0 ]]; then
+    echo "Install log is empty or contains no per-component entries." && exit 1
+  fi
+
+  declare -A comp_pkg_map
+  for entry in "${entries[@]}"; do
+    IFS='|' read -r _ _ component packages <<< "$entry"
+    comp_pkg_map["$component"]="$packages"
+  done
+
+  selected=$(printf '%s\n' "${!comp_pkg_map[@]}" \
+    | gum choose --no-limit --header "Select components to UNINSTALL:")
+
+  # Detect remove command
+  if   command -v pacman &>/dev/null; then remove_cmd="sudo pacman -Rs --noconfirm"
+  elif command -v apt    &>/dev/null; then remove_cmd="sudo apt remove -y"
+  elif command -v yum    &>/dev/null; then remove_cmd="sudo yum remove -y"
+  elif command -v brew   &>/dev/null; then remove_cmd="brew uninstall"
+  else echo "No supported package manager found." && exit 1
+  fi
+
+  while IFS= read -r comp; do
+    pkgs="${comp_pkg_map[$comp]}"
+    echo "Removing ${comp}: ${pkgs}"
+    # shellcheck disable=SC2086
+    $remove_cmd $pkgs || true
+    # Remove from log
+    sed -i.bak "/|${comp}|/d" "${DEVENV_LOG}"
+  done <<< "$selected"
+
+  echo "Done. See ${DEVENV_LOG} for remaining installed components."
+  exit 0
 fi
 
 platform='unknown'
@@ -103,110 +170,134 @@ if [ "$platform" = "linux" ]; then
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
 				sudo pacman -S python python-pip python-pipx
+				recordInstall "Python" "python python-pip python-pipx"
 			fi
 
 			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 				sudo pacman -S erlang
 				yay -S rebar3
+				recordInstall "Erlang" "erlang rebar3"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
 				sudo pacman -S elixir
 				yay -S elixir-ls
+				recordInstall "Elixir" "elixir elixir-ls"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
 				sudo pacman -S ruby
 				yay -S rbenv
+				recordInstall "Ruby" "ruby rbenv"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
 				sudo pacman -S rust rust-analyzer cargo
+				recordInstall "Rust" "rust rust-analyzer cargo"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
 				sudo pacman -S go gopls
+				recordInstall "Go" "go gopls"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
 				sudo pacman -S lua luarocks lua-language-server
+				recordInstall "Lua" "lua luarocks lua-language-server"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
 				yay -S r-rlang
+				recordInstall "R-lang" "r-rlang"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 				sudo pacman -S nodejs npm prettier
 				yay -S nvm
+				recordInstall "JavaScript" "nodejs npm prettier nvm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
 				sudo pacman -S typescript
+				recordInstall "TypeScript" "typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
 				sudo pacman -S ghc haskell-language-server cabal-install
+				recordInstall "Haskell" "ghc haskell-language-server cabal-install"
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
 				sudo pacman -S perl
 				yay -S perl-perl-languageserver
+				recordInstall "Perl" "perl perl-perl-languageserver"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
 				sudo pacman -S jdk-openjdk gradle maven
+				recordInstall "Java" "jdk-openjdk gradle maven"
 			fi
 
 			if [[ "$p_language" = *"Julia"* ]]; then
 				sudo pacman -S julia
+				recordInstall "Julia" "julia"
 			fi
 
 			if [[ "$p_language" = *"Bash"* ]]; then
 				sudo pacman -S bash-language-server shfmt shellcheck
+				recordInstall "Bash" "bash-language-server shfmt shellcheck"
 			fi
 
 			if [[ "$p_language" = *"C/C++"* ]]; then
 				sudo pacman -S cppcheck astyle iniparser
 				yay -S cmake-language-server
+				recordInstall "C/C++" "cppcheck astyle iniparser cmake-language-server"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
 				sudo pacman -S php composer
+				recordInstall "PHP" "php composer"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
 				sudo pacman -S postgresql
+				recordInstall "PostgreSQL" "postgresql"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
 				sudo pacman -S sqlite
+				recordInstall "SQLite" "sqlite"
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
 				yay -S mongodb-bin mongodb-tools-bin mongosh-bin
+				recordInstall "MongoDB" "mongodb-bin mongodb-tools-bin mongosh-bin"
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
 				sudo pacman -S mysql
+				recordInstall "MySQL" "mysql"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
 				sudo pacman -S neovim
+				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
 				sudo pacman -S docker docker-buildx docker-compose containerd
 				sudo usermod -aG docker $USER
 				newgrp docker
+				recordInstall "Docker" "docker docker-buildx docker-compose containerd"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
 				sudo pacman -S github-cli
+				recordInstall "GitHub" "github-cli"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
@@ -761,3 +852,7 @@ fi
 if [[ "$p_languages" = *"Java"* ]]; then
 	curl -s "https://get.sdkman.io" | bash
 fi
+
+# ─── Persist this session's selections ───────────────────────────────────────
+persistInstallRecord
+echo "Install record saved to ${DEVENV_LOG}"
