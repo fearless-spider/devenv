@@ -70,7 +70,7 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 ./devenv.sh
 ```
 
-## :seedling: TODO
+## 🌱 TODO
 
 Suggestions?
 
