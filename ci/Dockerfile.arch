@@ -1,0 +1,15 @@
+FROM archlinux:latest
+
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm sudo base-devel git curl openssl readline xz zlib libtool automake
+
+RUN useradd -G wheel -m spider && \
+    echo "spider ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER spider
+WORKDIR /home/spider
+
+COPY . /app
+WORKDIR /app
+
+CMD ["bash"]

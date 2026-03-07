@@ -1,0 +1,30 @@
+FROM fedora:41
+
+RUN dnf update -y && \
+    dnf groupinstall -y "Development Tools" && \
+    dnf install -y \
+    sudo curl git readline readline-devel libtool automake \
+    zlib-devel bzip2 ncurses-devel libyaml-devel && \
+    dnf clean all
+
+# Install gum
+RUN echo '[charm]
+name=Charm
+baseurl=https://repo.charm.sh/yum/
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.charm.sh/yum/gpg.key' > /etc/yum.repos.d/charm.repo && \
+    rpm --import https://repo.charm.sh/yum/gpg.key && \
+    dnf install -y gum && \
+    dnf clean all
+
+RUN useradd -m -s /bin/bash spider && \
+    echo "spider ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER spider
+WORKDIR /home/spider
+
+COPY . /app
+WORKDIR /app
+
+CMD ["bash"]

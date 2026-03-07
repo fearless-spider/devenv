@@ -7,6 +7,11 @@ echo "Databases: PostgreSQL, MongoDB, SQLite, MySQL"
 echo "Tools: Disk, Ngrok, Terminal, Cava, GitHub, IRC, Ollama"
 echo "Games: Tetris, Snake"
 
+CI_MODE=false
+if [[ "${1:-}" = "--ci" ]]; then
+  CI_MODE=true
+fi
+
 platform='unknown'
 distro='unknown'
 shell='sh'
@@ -67,22 +72,30 @@ elif [ "$platform" = "darwin" ]; then
 	brew install git curl libtool automake openssl readline xz zlib autoconf-archive gum
 fi
 
-gum style \
-	--foreground 36 --border-foreground 36 --border double \
-	--align center --width 50 --margin "1 2" --padding "2 4" \
-	'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
+if [[ "$CI_MODE" = true ]]; then
+  echo "[CI] Non-interactive mode — using smoke-test selections"
+  p_languages="Python Go"
+  databases="PostgreSQL"
+  tools="NeoVim Docker"
+  games=""
+else
+  gum style \
+    --foreground 36 --border-foreground 36 --border double \
+    --align center --width 50 --margin "1 2" --padding "2 4" \
+    'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
 
-AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
-p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "Which programming language(s) do you need?")
+  AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
+  p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "Which programming language(s) do you need?")
 
-AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
-databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
+  AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
+  databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
 
-AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama" "Redis")
-tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 13 --header "Which tool(s) do you need?")
+  AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama" "Redis")
+  tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 13 --header "Which tool(s) do you need?")
 
-AVAILABLE_GAMES=("Snake" "Tetris")
-games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
+  AVAILABLE_GAMES=("Snake" "Tetris")
+  games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
+fi
 
 if [ "$platform" = "linux" ]; then
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
