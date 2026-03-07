@@ -1,8 +1,14 @@
 # devenv
 
+![CI](https://github.com/fearless-spider/devenv/actions/workflows/blank.yml/badge.svg)
+![License](https://img.shields.io/badge/license-BSD--3--Clause-blue)
+![Platforms](https://img.shields.io/badge/platform-Arch%20|%20Ubuntu%20|%20Fedora%20|%20macOS-lightgrey)
+
 A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to install development tools, libraries,.. on :
 
 ![devenv usage](https://github.com/fearless-spider/devenv/blob/main/devenv_gum_2.png?raw=true)
+
+> Interactive selection powered by [gum](https://github.com/charmbracelet/gum)
 
 ## Operating System
 
@@ -64,19 +70,33 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - LSP
 - Formatters
 
+## ⚙️ Prerequisites
+
+| Platform | Requirement |
+|----------|------------|
+| All      | Bash ≥ 4.0 |
+| macOS    | [Homebrew](https://brew.sh) |
+| Linux    | sudo access |
+
+> [!NOTE]
+> macOS ships Bash 3.2. Install `brew install bash` and run with `/usr/local/bin/bash devenv.sh`
+
 ## 📖 Usage
 
-```shell
-./devenv.sh              # interactive mode (default)
-./devenv.sh --ci         # non-interactive CI smoke-test
-./devenv.sh --uninstall  # remove previously installed components
-```
+| Command | Description |
+|---------|-------------|
+| `./devenv.sh` | Interactive mode |
+| `./devenv.sh --ci` | Non-interactive smoke-test (Python, Go, PostgreSQL, NeoVim, Docker) |
+| `./devenv.sh --uninstall` | Remove previously installed components |
 
 Every run appends a session record to `~/.devenv_installed`.
 
-## 🌱 TODO
+## 🌱 Roadmap
 
-Suggestions?
+- [ ] `--dry-run` mode
+- [ ] Skip already-installed packages
+- [ ] `mise` as universal version manager
+- [ ] openSUSE / Debian support
 
 ## 🤝 Contributing
 
