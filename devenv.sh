@@ -290,8 +290,8 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Docker"* ]]; then
 				sudo pacman -S --noconfirm docker docker-buildx docker-compose containerd
-				sudo usermod -aG docker $USER
-				newgrp docker
+				sudo usermod -aG docker ${USER:-$(whoami)}
+				[[ "$CI_MODE" = false ]] && newgrp docker || true
 				recordInstall "Docker" "docker docker-buildx docker-compose containerd"
 			fi
 
@@ -651,8 +651,8 @@ if [ "$platform" = "linux" ]; then
 				sudo dnf -y install dnf-plugins-core
 				sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 				sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-				sudo usermod -aG docker $USER
-				systemctl enable --now docker
+				sudo usermod -aG docker ${USER:-$(whoami)}
+				[[ "$CI_MODE" = false ]] && systemctl enable --now docker || true
 				recordInstall "Docker" "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 			fi
 
