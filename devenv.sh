@@ -94,7 +94,7 @@ if [ "$platform" = "linux" ]; then
 				sudo pacman -S python python-pip python-pipx
 			fi
 
-			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
+			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 				sudo pacman -S erlang
 				yay -S rebar3
 			fi
@@ -220,11 +220,11 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
-				sudo pacman install irssi
+				sudo pacman -S irssi
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
-				sudo pacman install qemu-full
+				sudo pacman -S qemu-full
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -236,12 +236,12 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Redis"* ]]; then
-				sudo pacman install redis
+				sudo pacman -S redis
 			fi
 		done
 
 		for game in $games; do
-			if [[ "$game" = *"Games"* ]]; then
+			if [[ "$game" = *"Tetris"* ]]; then
 				yay -S tetris-terminal-git
 			fi
 		done
@@ -324,8 +324,8 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
-				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc
-				sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+				  sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 				sudo apt update
 				sudo apt install -y mongodb-org
@@ -698,9 +698,9 @@ elif [ "$platform" = "darwin" ]; then
 		fi
 	done
 
-	export LIBTOOL='which glibtool'
-	export LIBTOOLIZE='which glibtoolize'
-	ln -s 'which glibtoolize' /usr/local/bin/libtoolize
+	export LIBTOOL=$(which glibtool)
+	export LIBTOOLIZE=$(which glibtoolize)
+	ln -s $(which glibtoolize) /usr/local/bin/libtoolize
 	ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
@@ -731,7 +731,7 @@ if [[ "$p_languages" = *"Go"* ]]; then
 fi
 
 for game in $games; do
-	if [[ "$game" = *"Snake"* ]]; then
+	if [[ "$game" = *"Snake"* && "$p_languages" = *"Go"* ]]; then
 		go install github.com/DyegoCosta/snake-game@latest
 	fi
 done
@@ -749,5 +749,4 @@ fi
 
 if [[ "$p_languages" = *"Java"* ]]; then
 	curl -s "https://get.sdkman.io" | bash
-	sdk install gradle
 fi
