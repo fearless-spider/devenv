@@ -353,45 +353,54 @@ if [ "$platform" = "linux" ]; then
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
 				sudo apt install python3-full python3-pip
+				recordInstall "Python" "python3-full python3-pip"
 			fi
 
 			if [[ "$p_language" = *"Erlang" || "$p_language" = *"Elixir"* ]]; then
 				sudo apt install erlang rebar3 # elixir-ls
+				recordInstall "Erlang" "erlang rebar3"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
 				sudo apt install elixir # elixir-ls
+				recordInstall "Elixir" "elixir"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
 				sudo apt install ruby-full
+				recordInstall "Ruby" "ruby-full"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
 				curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
 				sudo apt install rust-analyzer
+				recordInstall "Rust" "rust-analyzer"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
 				sudo apt install golang-go gopls
+				recordInstall "Go" "golang-go gopls"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
 				sudo apt install lua5.4 luarocks # lua-language-server
+				recordInstall "Lua" "lua5.4 luarocks"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
 				sudo apt install r-base
+				recordInstall "R-lang" "r-base"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 				sudo apt install nodejs npm
 				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+				recordInstall "JavaScript" "nodejs npm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
 				sudo apt install node-typescript
-
+				recordInstall "TypeScript" "node-typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
@@ -401,10 +410,12 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$p_language" = *"Perl"* ]]; then
 				sudo apt install perl perl-perl-languageserver
+				recordInstall "Perl" "perl perl-perl-languageserver"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
 				sudo apt install default-jdk gradle
+				recordInstall "Java" "default-jdk gradle"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
@@ -413,16 +424,19 @@ if [ "$platform" = "linux" ]; then
 				php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 				php composer-setup.php --quiet && sudo mv composer.phar /usr/local/bin/composer
 				rm composer-setup.php
+				recordInstall "PHP" "php8.4"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
 				sudo apt install postgresql
+				recordInstall "PostgreSQL" "postgresql"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
 				sudo apt install sqlite
+				recordInstall "SQLite" "sqlite"
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
@@ -431,16 +445,19 @@ if [ "$platform" = "linux" ]; then
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 				sudo apt update
 				sudo apt install -y mongodb-org
+				recordInstall "MongoDB" "mongodb-org"
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
 				sudo apt install mysql-server
+				recordInstall "MySQL" "mysql-server"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
 				sudo apt install neovim
+				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
@@ -458,22 +475,27 @@ if [ "$platform" = "linux" ]; then
 
 				# Limit log size to avoid running out of disk
 				echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
+				recordInstall "Docker" "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
 				sudo apt install gh
+				recordInstall "GitHub" "gh"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
 				sudo apt install checkmake
+				recordInstall "Makefile" "checkmake"
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
 				sudo apt install espeak-ng cava
+				recordInstall "Cava" "espeak-ng cava"
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
 				sudo apt install ncdu
+				recordInstall "Disk" "ncdu"
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
@@ -483,14 +505,17 @@ if [ "$platform" = "linux" ]; then
 					sudo tee /etc/apt/sources.list.d/ngrok.list &&
 					sudo apt update &&
 					sudo apt install ngrok
+				recordInstall "Ngrok" "ngrok"
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
 				sudo apt install irssi
+				recordInstall "IRC" "irssi"
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
 				sudo apt install qemu-system
+				recordInstall "Qemu" "qemu-system"
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -508,6 +533,7 @@ if [ "$platform" = "linux" ]; then
 				echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 				sudo apt-get update
 				sudo apt-get install redis
+				recordInstall "Redis" "redis"
 			fi
 		done
 
@@ -522,71 +548,87 @@ if [ "$platform" = "linux" ]; then
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
 				sudo yum install python-pip python-devel
+				recordInstall "Python" "python-pip python-devel"
 			fi
 
 			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 				sudo yum install erlang rebar
+				recordInstall "Erlang" "erlang rebar"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
 				sudo yum install elixir
+				recordInstall "Elixir" "elixir"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
 				sudo yum install ruby ruby-devel rubygems
+				recordInstall "Ruby" "ruby ruby-devel rubygems"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
 				sudo yum install rust rust-analyzer cargo
+				recordInstall "Rust" "rust rust-analyzer cargo"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
 				sudo yum install go
+				recordInstall "Go" "go"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
 				sudo yum install lua luarocks
+				recordInstall "Lua" "lua luarocks"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
 				sudo yum install R
+				recordInstall "R-lang" "R"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 				sudo yum install nodejs npm
 				sudo npm install -g nvm prettier
+				recordInstall "JavaScript" "nodejs npm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
 				sudo yum install typescript
+				recordInstall "TypeScript" "typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
 				sudo dnf copr enable petersen/haskell-language-server
 				sudo yum install ghc-compiler haskell-language-server
+				recordInstall "Haskell" "ghc-compiler haskell-language-server"
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
 				sudo yum install perl
 				sudo cpan Perl::LanguageServer
+				recordInstall "Perl" "perl"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
 				sudo yum install java
+				recordInstall "Java" "java"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
 				sudo dnf install php-cli phpunit composer php-mysqli
+				recordInstall "PHP" "php-cli phpunit composer php-mysqli"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
 				sudo yum install postgresql-server postgresql postgresql-devel
+				recordInstall "PostgreSQL" "postgresql-server postgresql postgresql-devel"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
 				sudo yum install sqlite sqlite-devel
+				recordInstall "SQLite" "sqlite sqlite-devel"
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
@@ -595,12 +637,14 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$database" = *"MySQL"* ]]; then
 				sudo yum install mysql-server
+				recordInstall "MySQL" "mysql-server"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
 				sudo yum install neovim
+				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
@@ -609,22 +653,27 @@ if [ "$platform" = "linux" ]; then
 				sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 				sudo usermod -aG docker $USER
 				systemctl enable --now docker
+				recordInstall "Docker" "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
 				sudo yum install gh
+				recordInstall "GitHub" "gh"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
 				sudo yum install checkmake
+				recordInstall "Makefile" "checkmake"
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
 				sudo yum install espeak-ng cava
+				recordInstall "Cava" "espeak-ng cava"
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
 				sudo yum install ncdu
+				recordInstall "Disk" "ncdu"
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
@@ -633,10 +682,12 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"IRC"* ]]; then
 				sudo yum install irssi
+				recordInstall "IRC" "irssi"
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
 				sudo yum install qemu-kvm bridge-utils libvirt virt-install
+				recordInstall "Qemu" "qemu-kvm bridge-utils libvirt virt-install"
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -649,6 +700,7 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Redis"* ]]; then
 				sudo yum install redis
+				recordInstall "Redis" "redis"
 			fi
 		done
 
@@ -662,127 +714,157 @@ elif [ "$platform" = "darwin" ]; then
 	for p_language in $p_languages; do
 		if [[ "$p_language" = *"Python"* ]]; then
 			brew install python pyenv pyenv-virtualenv
+			recordInstall "Python" "python pyenv pyenv-virtualenv"
 		fi
 
 		if [[ "$p_language" = *"Ruby"* ]]; then
 			brew install ruby rbenv standard solargraph
+			recordInstall "Ruby" "ruby rbenv standard solargraph"
 		fi
 
 		if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
 			brew install erlang rebar3
+			recordInstall "Erlang" "erlang rebar3"
 		fi
 
 		if [[ "$p_language" = *"Elixir"* ]]; then
 			brew install elixir elixir-ls
+			recordInstall "Elixir" "elixir elixir-ls"
 		fi
 
 		if [[ "$p_language" = *"Rust"* ]]; then
 			brew install rust rust-analyzer
+			recordInstall "Rust" "rust rust-analyzer"
 		fi
 
 		if [[ "$p_language" = *"Lua"* ]]; then
 			brew install lua lua-language-server cmake
+			recordInstall "Lua" "lua lua-language-server cmake"
 		fi
 
 		if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
 			brew install node nvm
+			recordInstall "JavaScript" "node nvm"
 		fi
 
 		if [[ "$p_language" = *"TypeScript"* ]]; then
 			brew install typescript
+			recordInstall "TypeScript" "typescript"
 		fi
 
 		if [[ "$p_language" = *"Go"* ]]; then
 			brew install go gopls golangci-lint
+			recordInstall "Go" "go gopls golangci-lint"
 		fi
 
 		if [[ "$p_language" = *"Haskell"* ]]; then
 			brew install ghc ghcup haskell-language-server
+			recordInstall "Haskell" "ghc ghcup haskell-language-server"
 		fi
 
 		if [[ "$p_language" = *"Perl"* ]]; then
 			brew install perl
+			recordInstall "Perl" "perl"
 		fi
 
 		if [[ "$p_language" = *"Java"* ]]; then
 			brew install java gradle maven
+			recordInstall "Java" "java gradle maven"
 		fi
 
 		if [[ "$p_language" = *"Bash"* ]]; then
 			brew install bash-language-server shfmt shellcheck
+			recordInstall "Bash" "bash-language-server shfmt shellcheck"
 		fi
 
 		if [[ "$p_language" = *"C/C++"* ]]; then
 			brew install cppcheck astyle iniparser clang-format cmake-language-server
+			recordInstall "C/C++" "cppcheck astyle iniparser clang-format cmake-language-server"
 		fi
 
 		if [[ "$p_language" = *"PHP"* ]]; then
 			brew install php
+			recordInstall "PHP" "php"
 		fi
 	done
 
 	for database in $databases; do
 		if [[ "$database" = *"PostgreSQL"* ]]; then
 			brew install postgresql
+			recordInstall "PostgreSQL" "postgresql"
 		fi
 
 		if [[ "$database" = *"SQLite"* ]]; then
 			brew install sqlite3
+			recordInstall "SQLite" "sqlite3"
 		fi
 
 		if [[ "$database" = *"MongoDB"* ]]; then
 			brew tap mongodb/brew
 			brew install mongodb/brew/mongodb-community
+			recordInstall "MongoDB" "mongodb-community"
 		fi
 
 		if [[ "$database" = *"MySQL"* ]]; then
 			brew install mysql
+			recordInstall "MySQL" "mysql"
 		fi
 	done
 
 	for tool in $tools; do
 		if [[ "$tool" = *"NeoVim"* ]]; then
 			brew install neovim
+			recordInstall "NeoVim" "neovim"
 		fi
 
 		if [[ "$tool" = *"Docker"* ]]; then
 			brew install docker docker-compose hadolint
+			recordInstall "Docker" "docker docker-compose hadolint"
 		fi
 
 		if [[ "$tool" = *"GitHub"* ]]; then
 			brew install gh gitlint
+			recordInstall "GitHub" "gh gitlint"
 		fi
 
 		if [[ "$tool" = *"Makefile"* ]]; then
 			brew install checkmake
+			recordInstall "Makefile" "checkmake"
 		fi
 
 		if [[ "$tool" = *"Cava"* ]]; then
 			brew install fftw ncurses espeak portaudio cava
+			recordInstall "Cava" "fftw ncurses espeak portaudio cava"
 		fi
 
 		if [[ "$tool" = *"Disk"* ]]; then
 			brew install ncdu
+			recordInstall "Disk" "ncdu"
 		fi
 
 		if [[ "$tool" = *"Ngrok"* ]]; then
 			brew install ngrok
+			recordInstall "Ngrok" "ngrok"
 		fi
 
 		if [[ "$tool" = *"Terminal"* ]]; then
 			brew install ripgrep fd lazygit tmux powerlevel10k circumflex
+			recordInstall "Terminal" "ripgrep fd lazygit tmux powerlevel10k circumflex"
 		fi
 
 		if [[ "$tool" = *"IRC"* ]]; then
 			brew install irssi
+			recordInstall "IRC" "irssi"
 		fi
 
 		if [[ "$tool" = *"Qemu"* ]]; then
 			brew install qemu libvirt
+			recordInstall "Qemu" "qemu libvirt"
 		fi
 
 		if [[ "$tool" = *"Email"* ]]; then
 			brew install pass isync msmtp abook urlview neomutt
+			recordInstall "Email" "pass isync msmtp abook urlview neomutt"
 		fi
 
 		if [[ "$tool" = *"Ollama"* ]]; then
