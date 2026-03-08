@@ -11,10 +11,10 @@ CI_MODE=false
 UNINSTALL_MODE=false
 
 for arg in "$@"; do
-  case "$arg" in
-    --ci)         CI_MODE=true ;;
-    --uninstall)  UNINSTALL_MODE=true ;;
-  esac
+	case "$arg" in
+	--ci) CI_MODE=true ;;
+	--uninstall) UNINSTALL_MODE=true ;;
+	esac
 done
 
 # ─── Install log ──────────────────────────────────────────────────────────────
@@ -22,61 +22,69 @@ DEVENV_LOG="${HOME}/.devenv_installed"
 
 # Append one tracked entry: recordInstall "Python" "python python-pip python-pipx"
 recordInstall() {
-  local component="$1" packages="$2"
-  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)|${distro}|${component}|${packages}" >> "${DEVENV_LOG}"
+	local component="$1" packages="$2"
+	echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)|${distro}|${component}|${packages}" >>"${DEVENV_LOG}"
 }
 
 # Serialise the full selection set after a run
 persistInstallRecord() {
-  local ts; ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-  echo "# session ${ts} | distro=${distro} | platform=${platform}" >> "${DEVENV_LOG}"
-  echo "LANGUAGES=${p_languages//$'\n'/,}"  >> "${DEVENV_LOG}"
-  echo "DATABASES=${databases//$'\n'/,}"   >> "${DEVENV_LOG}"
-  echo "TOOLS=${tools//$'\n'/,}"           >> "${DEVENV_LOG}"
-  echo "GAMES=${games//$'\n'/,}"           >> "${DEVENV_LOG}"
-  echo "---"                               >> "${DEVENV_LOG}"
+	local ts
+	ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+	echo "# session ${ts} | distro=${distro} | platform=${platform}" >>"${DEVENV_LOG}"
+	echo "LANGUAGES=${p_languages//$'\n'/,}" >>"${DEVENV_LOG}"
+	echo "DATABASES=${databases//$'\n'/,}" >>"${DEVENV_LOG}"
+	echo "TOOLS=${tools//$'\n'/,}" >>"${DEVENV_LOG}"
+	echo "GAMES=${games//$'\n'/,}" >>"${DEVENV_LOG}"
+	echo "---" >>"${DEVENV_LOG}"
 }
 
 # ─── Uninstall handler ────────────────────────────────────────────────────────
 if [[ "$UNINSTALL_MODE" = true ]]; then
-  if [[ ! -f "${DEVENV_LOG}" ]]; then
-    echo "No install record found at ${DEVENV_LOG}" && exit 1
-  fi
+	if [[ ! -f "${DEVENV_LOG}" ]]; then
+		echo "No install record found at ${DEVENV_LOG}" && exit 1
+	fi
 
-  # Collect unique component|packages pairs from log
-  mapfile -t entries < <(grep -v '^#' "${DEVENV_LOG}" | grep -v '^---' | grep -v '^[A-Z]')
-  if [[ ${#entries[@]} -eq 0 ]]; then
-    echo "Install log is empty or contains no per-component entries." && exit 1
-  fi
+	# Collect unique component|packages pairs from log
+	mapfile -t entries < <(grep -v '^#' "${DEVENV_LOG}" | grep -v '^---' | grep -v '^[A-Z]')
+	if [[ ${#entries[@]} -eq 0 ]]; then
+		echo "Install log is empty or contains no per-component entries." && exit 1
+	fi
 
-  declare -A comp_pkg_map
-  for entry in "${entries[@]}"; do
-    IFS='|' read -r _ _ component packages <<< "$entry"
-    comp_pkg_map["$component"]="$packages"
-  done
+	declare -A comp_pkg_map
+	for entry in "${entries[@]}"; do
+		IFS='|' read -r _ _ component packages <<<"$entry"
+		comp_pkg_map["$component"]="$packages"
+	done
 
-  selected=$(printf '%s\n' "${!comp_pkg_map[@]}" \
-    | gum choose --no-limit --header "Select components to UNINSTALL:")
+	selected=$(printf '%s\n' "${!comp_pkg_map[@]}" |
+		gum choose --no-limit --header "Select components to UNINSTALL:")
 
-  # Detect remove command
-  if   command -v pacman &>/dev/null; then remove_cmd="sudo pacman -Rs --noconfirm"
-  elif command -v apt    &>/dev/null; then remove_cmd="sudo apt remove -y"
-  elif command -v yum    &>/dev/null; then remove_cmd="sudo yum remove -y"
-  elif command -v brew   &>/dev/null; then remove_cmd="brew uninstall"
-  else echo "No supported package manager found." && exit 1
-  fi
+	# Detect remove command
+	if command -v pacman &>/dev/null; then
+		remove_cmd="sudo pacman -Rs --noconfirm"
+	elif command -v apt &>/dev/null; then
+		remove_cmd="sudo apt remove -y"
+	elif command -v zypper &>/dev/null; then
+		remove_cmd="sudo zypper rm -y"
+	elif command -v yum &>/dev/null; then
+		remove_cmd="sudo yum remove -y"
+	elif command -v brew &>/dev/null; then
+		remove_cmd="brew uninstall"
+	else
+		echo "No supported package manager found." && exit 1
+	fi
 
-  while IFS= read -r comp; do
-    pkgs="${comp_pkg_map[$comp]}"
-    echo "Removing ${comp}: ${pkgs}"
-    # shellcheck disable=SC2086
-    $remove_cmd $pkgs || true
-    # Remove from log
-    sed -i.bak "/|${comp}|/d" "${DEVENV_LOG}"
-  done <<< "$selected"
+	while IFS= read -r comp; do
+		pkgs="${comp_pkg_map[$comp]}"
+		echo "Removing ${comp}: ${pkgs}"
+		# shellcheck disable=SC2086
+		$remove_cmd $pkgs || true
+		# Remove from log
+		sed -i.bak "/|${comp}|/d" "${DEVENV_LOG}"
+	done <<<"$selected"
 
-  echo "Done. See ${DEVENV_LOG} for remaining installed components."
-  exit 0
+	echo "Done. See ${DEVENV_LOG} for remaining installed components."
+	exit 0
 fi
 
 platform='unknown'
@@ -106,6 +114,8 @@ echo "Installing base packages"
 if [ "$platform" = "linux" ]; then
 	echo "Determined platform: $distro"
 
+	if [[ "$distro" = *"Debian"* ]]; then distro="Ubuntu"; fi
+
 	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --noconfirm base-devel git curl openssl readline xz zlib libtool automake gum
@@ -126,6 +136,11 @@ if [ "$platform" = "linux" ]; then
 		printf '[charm]\nname=Charm\nbaseurl=https://repo.charm.sh/yum/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key\n' | sudo tee /etc/yum.repos.d/charm.repo
 		sudo rpm --import https://repo.charm.sh/yum/gpg.key
 		sudo yum install -y gum
+	elif [[ "$distro" == *"openSUSE"* ]]; then
+		sudo zypper in -y gcc gcc-c++ make readline-devel libtool automake zlib-devel bzip2 ncurses-devel libyaml-devel git curl
+		sudo rpm --import https://repo.charm.sh/yum/gpg.key
+		sudo zypper ar -cfp 90 https://repo.charm.sh/yum/ charm
+		sudo zypper in -y gum
 	fi
 elif [ "$platform" = "darwin" ]; then
 	echo "Determined platform: $platform"
@@ -134,28 +149,28 @@ elif [ "$platform" = "darwin" ]; then
 fi
 
 if [[ "$CI_MODE" = true ]]; then
-  echo "[CI] Non-interactive mode — using smoke-test selections"
-  p_languages="Python Go"
-  databases="PostgreSQL"
-  tools="NeoVim Docker"
-  games=""
+	echo "[CI] Non-interactive mode — using smoke-test selections"
+	p_languages="Python Go"
+	databases="PostgreSQL"
+	tools="NeoVim Docker"
+	games=""
 else
-  gum style \
-    --foreground 36 --border-foreground 36 --border double \
-    --align center --width 50 --margin "1 2" --padding "2 4" \
-    'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
+	gum style \
+		--foreground 36 --border-foreground 36 --border double \
+		--align center --width 50 --margin "1 2" --padding "2 4" \
+		'devenv.sh' 'A glamorous shell scripts to install development tools, libraries on Linux and MacOSX'
 
-  AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
-  p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "Which programming language(s) do you need?")
+	AVAILABLE_LANGUAGES=("C/C++" "Ruby" "JavaScript" "TypeScript" "Go" "PHP" "Python" "Erlang" "Elixir" "Rust" "Java" "Lua" "Haskell" "Perl" "Julia" "R-lang")
+	p_languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 16 --header "Which programming language(s) do you need?")
 
-  AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
-  databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
+	AVAILABLE_DATABASES=("PostgreSQL" "SQLite" "MongoDB" "MySQL")
+	databases=$(gum choose "${AVAILABLE_DATABASES[@]}" --no-limit --height 4 --header "Which database(s) do you need?")
 
-  AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama" "Redis")
-  tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 13 --header "Which tool(s) do you need?")
+	AVAILABLE_TOOLS=("NeoVim" "Docker" "Makefile" "GitHub" "IRC" "Qemu" "Ngrok" "Email" "Disk" "Terminal" "Cava" "Ollama" "Redis")
+	tools=$(gum choose "${AVAILABLE_TOOLS[@]}" --no-limit --height 13 --header "Which tool(s) do you need?")
 
-  AVAILABLE_GAMES=("Snake" "Tetris")
-  games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
+	AVAILABLE_GAMES=("Snake" "Tetris")
+	games=$(gum choose "${AVAILABLE_GAMES[@]}" --no-limit --height 2 --header "Which game(s) do you need?")
 fi
 
 if [ "$platform" = "linux" ]; then
@@ -434,8 +449,8 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
-				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
-				  sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+				curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc |
+					sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
 				echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 				sudo apt update
 				sudo apt install -y mongodb-org
@@ -458,7 +473,8 @@ if [ "$platform" = "linux" ]; then
 				sudo install -m 0755 -d /etc/apt/keyrings
 				sudo curl -fsSL -o /etc/apt/keyrings/docker.asc https://download.docker.com/linux/ubuntu/gpg
 				sudo chmod a+r /etc/apt/keyrings/docker.asc
-				echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+				DIST_DEBIAN_OR_UBUNTU=$(. /etc/os-release && echo "$ID")
+				echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$DIST_DEBIAN_OR_UBUNTU $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 				sudo apt update
 
 				# Install Docker engine and standard plugins
@@ -694,6 +710,169 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$tool" = *"Redis"* ]]; then
 				sudo yum install -y redis
+				recordInstall "Redis" "redis"
+			fi
+		done
+
+		for game in $games; do
+			if [[ "$game" = *"Tetris"* ]]; then
+				echo "Not supported"
+			fi
+		done
+
+	elif [[ "$distro" == *"openSUSE"* ]]; then
+
+		for p_language in $p_languages; do
+			if [[ "$p_language" = *"Python"* ]]; then
+				sudo zypper in -y python311 python311-pip python311-devel
+				recordInstall "Python" "python311 python311-pip python311-devel"
+			fi
+
+			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
+				sudo zypper in -y erlang rebar3
+				recordInstall "Erlang" "erlang rebar3"
+			fi
+
+			if [[ "$p_language" = *"Elixir"* ]]; then
+				sudo zypper in -y elixir
+				recordInstall "Elixir" "elixir"
+			fi
+
+			if [[ "$p_language" = *"Ruby"* ]]; then
+				sudo zypper in -y ruby ruby-devel rubygem-bundler
+				recordInstall "Ruby" "ruby ruby-devel rubygem-bundler"
+			fi
+
+			if [[ "$p_language" = *"Rust"* ]]; then
+				sudo zypper in -y rust rust-analyzer cargo
+				recordInstall "Rust" "rust rust-analyzer cargo"
+			fi
+
+			if [[ "$p_language" = *"Go"* ]]; then
+				sudo zypper in -y go
+				recordInstall "Go" "go"
+			fi
+
+			if [[ "$p_language" = *"Lua"* ]]; then
+				sudo zypper in -y lua lua-devel luarocks
+				recordInstall "Lua" "lua lua-devel luarocks"
+			fi
+
+			if [[ "$p_language" = *"R-lang"* ]]; then
+				sudo zypper in -y R-base R-core-devel
+				recordInstall "R-lang" "R-base R-core-devel"
+			fi
+
+			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
+				sudo zypper in -y nodejs npm
+				sudo npm install -g nvm prettier
+				recordInstall "JavaScript" "nodejs npm"
+			fi
+
+			if [[ "$p_language" = *"TypeScript"* ]]; then
+				sudo zypper in -y typescript
+				recordInstall "TypeScript" "typescript"
+			fi
+
+			if [[ "$p_language" = *"Haskell"* ]]; then
+				sudo zypper in -y ghc haskell-language-server
+				recordInstall "Haskell" "ghc haskell-language-server"
+			fi
+
+			if [[ "$p_language" = *"Perl"* ]]; then
+				sudo zypper in -y perl
+				recordInstall "Perl" "perl"
+			fi
+
+			if [[ "$p_language" = *"Java"* ]]; then
+				sudo zypper in -y java-17-openjdk java-17-openjdk-devel
+				recordInstall "Java" "java-17-openjdk java-17-openjdk-devel"
+			fi
+
+			if [[ "$p_language" = *"PHP"* ]]; then
+				sudo zypper in -y php8 php8-cli php8-composer
+				recordInstall "PHP" "php8 php8-cli php8-composer"
+			fi
+		done
+
+		for database in $databases; do
+			if [[ "$database" = *"PostgreSQL"* ]]; then
+				sudo zypper in -y postgresql-server postgresql postgresql-devel
+				recordInstall "PostgreSQL" "postgresql-server postgresql postgresql-devel"
+			fi
+
+			if [[ "$database" = *"SQLite"* ]]; then
+				sudo zypper in -y sqlite3 sqlite3-devel
+				recordInstall "SQLite" "sqlite3 sqlite3-devel"
+			fi
+
+			if [[ "$database" = *"MongoDB"* ]]; then
+				echo "Not supported natively on openSUSE leap in this script."
+			fi
+
+			if [[ "$database" = *"MySQL"* ]]; then
+				sudo zypper in -y mariadb mariadb-client
+				recordInstall "MySQL" "mariadb mariadb-client"
+			fi
+		done
+
+		for tool in $tools; do
+			if [[ "$tool" = *"NeoVim"* ]]; then
+				sudo zypper in -y neovim
+				recordInstall "NeoVim" "neovim"
+			fi
+
+			if [[ "$tool" = *"Docker"* ]]; then
+				sudo zypper in -y docker docker-compose
+				sudo usermod -aG docker ${USER:-$(whoami)}
+				[[ "$CI_MODE" = false ]] && systemctl enable --now docker || true
+				recordInstall "Docker" "docker docker-compose"
+			fi
+
+			if [[ "$tool" = *"GitHub"* ]]; then
+				sudo zypper in -y gh
+				recordInstall "GitHub" "gh"
+			fi
+
+			if [[ "$tool" = *"Makefile"* ]]; then
+				sudo zypper in -y checkmake
+				recordInstall "Makefile" "checkmake"
+			fi
+
+			if [[ "$tool" = *"Cava"* ]]; then
+				sudo zypper in -y espeak-ng cava
+				recordInstall "Cava" "espeak-ng cava"
+			fi
+
+			if [[ "$tool" = *"Disk"* ]]; then
+				sudo zypper in -y ncdu
+				recordInstall "Disk" "ncdu"
+			fi
+
+			if [[ "$tool" = *"Ngrok"* ]]; then
+				echo "Not supported"
+			fi
+
+			if [[ "$tool" = *"IRC"* ]]; then
+				sudo zypper in -y irssi
+				recordInstall "IRC" "irssi"
+			fi
+
+			if [[ "$tool" = *"Qemu"* ]]; then
+				sudo zypper in -y qemu-x86 qemu-kvm libvirt
+				recordInstall "Qemu" "qemu-x86 qemu-kvm libvirt"
+			fi
+
+			if [[ "$tool" = *"Email"* ]]; then
+				echo "Not supported"
+			fi
+
+			if [[ "$tool" = *"Ollama"* ]]; then
+				curl -fsSL https://ollama.com/install.sh | sh
+			fi
+
+			if [[ "$tool" = *"Redis"* ]]; then
+				sudo zypper in -y redis
 				recordInstall "Redis" "redis"
 			fi
 		done

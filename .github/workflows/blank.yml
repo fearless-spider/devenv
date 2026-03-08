@@ -22,6 +22,10 @@ jobs:
             dockerfile: ci/Dockerfile.ubuntu
           - distro: fedora
             dockerfile: ci/Dockerfile.fedora
+          - distro: opensuse
+            dockerfile: ci/Dockerfile.opensuse
+          - distro: debian
+            dockerfile: ci/Dockerfile.debian
 
     steps:
       - uses: actions/checkout@v4

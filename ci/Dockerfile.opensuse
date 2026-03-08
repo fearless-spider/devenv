@@ -1,0 +1,18 @@
+FROM opensuse/leap:latest
+
+RUN zypper update -y && zypper in -y \
+    sudo \
+    curl \
+    git \
+    tar \
+    gzip
+
+RUN useradd -m -s /bin/bash f3ar13ss && \
+    echo "f3ar13ss ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER f3ar13ss
+WORKDIR /home/f3ar13ss/devenv
+
+COPY --chown=f3ar13ss:f3ar13ss . .
+
+CMD ["./devenv.sh", "--ci"]
