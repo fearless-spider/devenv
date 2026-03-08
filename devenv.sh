@@ -244,7 +244,7 @@ if [ "$platform" = "linux" ]; then
 
 			if [[ "$p_language" = *"C/C++"* ]]; then
 				sudo pacman -S --needed --noconfirm cppcheck astyle iniparser
-				yay -S --neededcmake-language-server
+				yay -S --needed cmake-language-server
 				recordInstall "C/C++" "cppcheck astyle iniparser cmake-language-server"
 			fi
 
