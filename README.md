@@ -15,6 +15,8 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - Arch Linux
 - Fedora Linux
 - Ubuntu Linux
+- Debian
+- openSUSE
 - macOS
 
 ## 🚀 Features
@@ -95,7 +97,6 @@ Every run appends a session record to `~/.devenv_installed`.
 
 - [ ] `--dry-run` mode
 - [ ] `mise` as universal version manager
-- [ ] openSUSE / Debian support
 
 ## 🤝 Contributing
 
