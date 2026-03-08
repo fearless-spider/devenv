@@ -67,6 +67,43 @@ A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to in
 - Tetris
 - Snake
 
+---
+
+## 📦 What gets installed
+
+| Component | Arch | Ubuntu / Debian | Fedora | openSUSE |
+|-----------|------|-----------------|--------|----------|
+| **Python** | `python python-pip python-pipx` | `python3-full python3-pip` | `python-pip python-devel` | `python311 python311-pip` |
+| **Go** | `go gopls` | `golang-go gopls` | `go` | `go` |
+| **Rust** | `rust rust-analyzer cargo` | `rust-analyzer` | `rust rust-analyzer cargo` | `rust rust-analyzer cargo` |
+| **Ruby** | `ruby rbenv` | `ruby-full` | `ruby ruby-devel rubygems` | `ruby ruby-devel rubygem-bundler` |
+| **Lua** | `lua luarocks lua-language-server` | `lua5.4 luarocks` | `lua luarocks` | `lua lua-devel luarocks` |
+| **Java** | `jdk-openjdk gradle maven` | `default-jdk maven gradle` | `java-17-openjdk-devel` | `java-17-openjdk java-17-openjdk-devel` |
+| **JavaScript** | `nodejs npm prettier` | `nodejs npm` | `nodejs npm prettier` | `nodejs npm` |
+| **TypeScript** | `typescript` | `node-typescript` | `typescript` | `typescript` |
+| **Haskell** | `ghc haskell-language-server cabal-install` | `haskell-platform` | `ghc cabal-install` | `ghc haskell-language-server` |
+| **Erlang** | `erlang` | `erlang rebar3` | `erlang rebar` | `erlang rebar3` |
+| **Elixir** | `elixir` | `elixir` | `elixir` | `elixir` |
+| **Perl** | `perl` | `perl` | `perl` | `perl` |
+| **PHP** | `php composer` | `php php-cli composer` | `php php-cli` | `php8 php8-cli php8-composer` |
+| **R-lang** | `r-rlang` | `r-base` | `R` | `R-base R-core-devel` |
+| **C/C++** | `cppcheck astyle cmake-language-server` | `cppcheck astyle` | `cppcheck astyle` | *(base-devel)* |
+| **Bash** | `bash-language-server shfmt shellcheck` | `shellcheck shfmt` | `shellcheck` | *(manual)* |
+| **Julia** | `julia` | `julia` | `julia` | *(manual)* |
+| **PostgreSQL** | `postgresql` | `postgresql` | `postgresql-server` | `postgresql-server postgresql` |
+| **SQLite** | `sqlite` | `sqlite3` | `sqlite` | `sqlite3 sqlite3-devel` |
+| **MongoDB** | `mongodb-bin` (AUR) | *(Docker recommended)* | *(Docker recommended)* | *(Docker recommended)* |
+| **MySQL** | `mysql` | `mysql-server` | `mariadb` | `mariadb mariadb-client` |
+| **NeoVim** | `neovim` | `neovim` | `neovim` | `neovim` |
+| **Docker** | `docker docker-compose containerd` | *(official repo)* | `docker docker-compose` | `docker docker-compose` |
+| **Redis** | `redis` | *(official repo)* | `redis` | `redis` |
+| **GitHub CLI** | `github-cli` | `gh` | `gh` | `gh` |
+| **IRC** | `irssi` | `irssi` | `irssi` | `irssi` |
+| **Ngrok** | *(official script)* | *(official repo)* | *(ngrok.repo)* | *(ngrok.repo)* |
+| **Qemu** | `qemu-full` | `qemu-system` | `qemu-kvm libvirt` | `qemu-x86 qemu-kvm libvirt` |
+| **Ollama** | *(install.sh)* | *(install.sh)* | *(install.sh)* | *(install.sh)* |
+| **Tetris** | `bastet` | `bastet` | `bastet` | `tint` |
+
 ### Extras
 
 - LSP
