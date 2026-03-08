@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/fearless-spider/devenv/actions/workflows/blank.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-BSD--3--Clause-blue)
-![Platforms](https://img.shields.io/badge/platform-Arch%20|%20Ubuntu%20|%20Fedora%20|%20macOS-lightgrey)
+![Platforms](https://img.shields.io/badge/platform-Arch%20|%20Ubuntu%20|%20Fedora%20|%20Debian%20|%20openSUSE%20|%20macOS-lightgrey)
 
 A glamorous shell scripts with [gum](https://github.com/charmbracelet/gum) to install development tools, libraries,.. on :
 
