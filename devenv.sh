@@ -163,164 +163,164 @@ if [ "$platform" = "linux" ]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
-				sudo pacman -S --noconfirm python python-pip python-pipx
+				sudo pacman -S --needed --noconfirm python python-pip python-pipx
 				recordInstall "Python" "python python-pip python-pipx"
 			fi
 
 			if [[ "$p_language" = *"Erlang"* || "$p_language" = *"Elixir"* ]]; then
-				sudo pacman -S --noconfirm erlang
-				yay -S rebar3
+				sudo pacman -S --needed --noconfirm erlang
+				yay -S --needed rebar3
 				recordInstall "Erlang" "erlang rebar3"
 			fi
 
 			if [[ "$p_language" = *"Elixir"* ]]; then
-				sudo pacman -S --noconfirm elixir
-				yay -S elixir-ls
+				sudo pacman -S --needed --noconfirm elixir
+				yay -S --needed elixir-ls
 				recordInstall "Elixir" "elixir elixir-ls"
 			fi
 
 			if [[ "$p_language" = *"Ruby"* ]]; then
-				sudo pacman -S --noconfirm ruby
-				yay -S rbenv
+				sudo pacman -S --needed --noconfirm ruby
+				yay -S --needed rbenv
 				recordInstall "Ruby" "ruby rbenv"
 			fi
 
 			if [[ "$p_language" = *"Rust"* ]]; then
-				sudo pacman -S --noconfirm rust rust-analyzer cargo
+				sudo pacman -S --needed --noconfirm rust rust-analyzer cargo
 				recordInstall "Rust" "rust rust-analyzer cargo"
 			fi
 
 			if [[ "$p_language" = *"Go"* ]]; then
-				sudo pacman -S --noconfirm go gopls
+				sudo pacman -S --needed --noconfirm go gopls
 				recordInstall "Go" "go gopls"
 			fi
 
 			if [[ "$p_language" = *"Lua"* ]]; then
-				sudo pacman -S --noconfirm lua luarocks lua-language-server
+				sudo pacman -S --needed --noconfirm lua luarocks lua-language-server
 				recordInstall "Lua" "lua luarocks lua-language-server"
 			fi
 
 			if [[ "$p_language" = *"R-lang"* ]]; then
-				yay -S r-rlang
+				yay -S --needed r-rlang
 				recordInstall "R-lang" "r-rlang"
 			fi
 
 			if [[ "$p_language" = *"JavaScript"* || "$p_language" = *"TypeScript"* ]]; then
-				sudo pacman -S --noconfirm nodejs npm prettier
-				yay -S nvm
+				sudo pacman -S --needed --noconfirm nodejs npm prettier
+				yay -S --needed nvm
 				recordInstall "JavaScript" "nodejs npm prettier nvm"
 			fi
 
 			if [[ "$p_language" = *"TypeScript"* ]]; then
-				sudo pacman -S --noconfirm typescript
+				sudo pacman -S --needed --noconfirm typescript
 				recordInstall "TypeScript" "typescript"
 			fi
 
 			if [[ "$p_language" = *"Haskell"* ]]; then
-				sudo pacman -S --noconfirm ghc haskell-language-server cabal-install
+				sudo pacman -S --needed --noconfirm ghc haskell-language-server cabal-install
 				recordInstall "Haskell" "ghc haskell-language-server cabal-install"
 			fi
 
 			if [[ "$p_language" = *"Perl"* ]]; then
-				sudo pacman -S --noconfirm perl
-				yay -S perl-perl-languageserver
+				sudo pacman -S --needed --noconfirm perl
+				yay -S --needed perl-perl-languageserver
 				recordInstall "Perl" "perl perl-perl-languageserver"
 			fi
 
 			if [[ "$p_language" = *"Java"* ]]; then
-				sudo pacman -S --noconfirm jdk-openjdk gradle maven
+				sudo pacman -S --needed --noconfirm jdk-openjdk gradle maven
 				recordInstall "Java" "jdk-openjdk gradle maven"
 			fi
 
 			if [[ "$p_language" = *"Julia"* ]]; then
-				sudo pacman -S --noconfirm julia
+				sudo pacman -S --needed --noconfirm julia
 				recordInstall "Julia" "julia"
 			fi
 
 			if [[ "$p_language" = *"Bash"* ]]; then
-				sudo pacman -S --noconfirm bash-language-server shfmt shellcheck
+				sudo pacman -S --needed --noconfirm bash-language-server shfmt shellcheck
 				recordInstall "Bash" "bash-language-server shfmt shellcheck"
 			fi
 
 			if [[ "$p_language" = *"C/C++"* ]]; then
-				sudo pacman -S --noconfirm cppcheck astyle iniparser
-				yay -S cmake-language-server
+				sudo pacman -S --needed --noconfirm cppcheck astyle iniparser
+				yay -S --neededcmake-language-server
 				recordInstall "C/C++" "cppcheck astyle iniparser cmake-language-server"
 			fi
 
 			if [[ "$p_language" = *"PHP"* ]]; then
-				sudo pacman -S --noconfirm php composer
+				sudo pacman -S --needed --noconfirm php composer
 				recordInstall "PHP" "php composer"
 			fi
 		done
 
 		for database in $databases; do
 			if [[ "$database" = *"PostgreSQL"* ]]; then
-				sudo pacman -S --noconfirm postgresql
+				sudo pacman -S --needed --noconfirm postgresql
 				recordInstall "PostgreSQL" "postgresql"
 			fi
 
 			if [[ "$database" = *"SQLite"* ]]; then
-				sudo pacman -S --noconfirm sqlite
+				sudo pacman -S --needed --noconfirm sqlite
 				recordInstall "SQLite" "sqlite"
 			fi
 
 			if [[ "$database" = *"MongoDB"* ]]; then
-				yay -S mongodb-bin mongodb-tools-bin mongosh-bin
+				yay -S --needed mongodb-bin mongodb-tools-bin mongosh-bin
 				recordInstall "MongoDB" "mongodb-bin mongodb-tools-bin mongosh-bin"
 			fi
 
 			if [[ "$database" = *"MySQL"* ]]; then
-				sudo pacman -S --noconfirm mysql
+				sudo pacman -S --needed --noconfirm mysql
 				recordInstall "MySQL" "mysql"
 			fi
 		done
 
 		for tool in $tools; do
 			if [[ "$tool" = *"NeoVim"* ]]; then
-				sudo pacman -S --noconfirm neovim
+				sudo pacman -S --needed --noconfirm neovim
 				recordInstall "NeoVim" "neovim"
 			fi
 
 			if [[ "$tool" = *"Docker"* ]]; then
-				sudo pacman -S --noconfirm docker docker-buildx docker-compose containerd
+				sudo pacman -S --needed --noconfirm docker docker-buildx docker-compose containerd
 				sudo usermod -aG docker ${USER:-$(whoami)}
 				[[ "$CI_MODE" = false ]] && newgrp docker || true
 				recordInstall "Docker" "docker docker-buildx docker-compose containerd"
 			fi
 
 			if [[ "$tool" = *"GitHub"* ]]; then
-				sudo pacman -S --noconfirm github-cli
+				sudo pacman -S --needed --noconfirm github-cli
 				recordInstall "GitHub" "github-cli"
 			fi
 
 			if [[ "$tool" = *"Makefile"* ]]; then
-				sudo pacman -S --noconfirm checkmake
+				sudo pacman -S --needed --noconfirm checkmake
 			fi
 
 			if [[ "$tool" = *"Cava"* ]]; then
-				sudo pacman -S --noconfirm fftw ncurses espeak-ng portaudio
-				yay -S cava
+				sudo pacman -S --needed --noconfirm fftw ncurses espeak-ng portaudio
+				yay -S --needed cava
 			fi
 
 			if [[ "$tool" = *"Disk"* ]]; then
-				sudo pacman -S --noconfirm ncdu
+				sudo pacman -S --needed --noconfirm ncdu
 			fi
 
 			if [[ "$tool" = *"Terminal"* ]]; then
-				sudo pacman -S --noconfirm ripgrep fd lazygit tmux
+				sudo pacman -S --needed --noconfirm ripgrep fd lazygit tmux
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
-				yay -S ngrok
+				yay -S --needed ngrok
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
-				sudo pacman -S --noconfirm irssi
+				sudo pacman -S --needed --noconfirm irssi
 			fi
 
 			if [[ "$tool" = *"Qemu"* ]]; then
-				sudo pacman -S --noconfirm qemu-full
+				sudo pacman -S --needed --noconfirm qemu-full
 			fi
 
 			if [[ "$tool" = *"Email"* ]]; then
@@ -332,13 +332,13 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Redis"* ]]; then
-				sudo pacman -S --noconfirm redis
+				sudo pacman -S --needed --noconfirm redis
 			fi
 		done
 
 		for game in $games; do
 			if [[ "$game" = *"Tetris"* ]]; then
-				yay -S tetris-terminal-git
+				yay -S --needed tetris-terminal-git
 			fi
 		done
 
