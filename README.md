@@ -94,7 +94,6 @@ Every run appends a session record to `~/.devenv_installed`.
 ## 🌱 Roadmap
 
 - [ ] `--dry-run` mode
-- [ ] Skip already-installed packages
 - [ ] `mise` as universal version manager
 - [ ] openSUSE / Debian support
 
