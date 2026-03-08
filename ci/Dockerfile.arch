@@ -1,6 +1,7 @@
-FROM archlinux:latest
+FROM --platform=linux/amd64 archlinux:latest
 
-RUN pacman -Syu --noconfirm && \
+RUN sed -i '/\[options\]/a DisableSandbox' /etc/pacman.conf && \
+    pacman -Syu --noconfirm && \
     pacman -S --noconfirm sudo base-devel git curl openssl readline xz zlib libtool automake
 
 RUN useradd -G wheel -m spider && \

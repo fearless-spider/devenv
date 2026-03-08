@@ -7,12 +7,13 @@ RUN zypper update -y && zypper in -y \
     tar \
     gzip
 
-RUN useradd -m -s /bin/bash f3ar13ss && \
-    echo "f3ar13ss ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN useradd -m -s /bin/bash spider && \
+    echo "spider ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-USER f3ar13ss
-WORKDIR /home/f3ar13ss/devenv
+USER spider
+WORKDIR /home/spider
 
-COPY --chown=f3ar13ss:f3ar13ss . .
+COPY . /app
+WORKDIR /app
 
-CMD ["./devenv.sh", "--ci"]
+CMD ["bash"]

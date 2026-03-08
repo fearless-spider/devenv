@@ -114,9 +114,10 @@ echo "Installing base packages"
 if [ "$platform" = "linux" ]; then
 	echo "Determined platform: $distro"
 
+	if [[ -f /etc/arch-release ]] || grep -q -i 'ID_LIKE=.*arch' /etc/os-release 2>/dev/null; then distro="Arch Linux"; fi
 	if [[ "$distro" = *"Debian"* ]]; then distro="Ubuntu"; fi
 
-	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
+	if [[ "$distro" = "Arch Linux" ]]; then
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --noconfirm base-devel git curl openssl readline xz zlib libtool automake gum
 	elif [ "$distro" = "Ubuntu" ]; then
@@ -174,7 +175,7 @@ else
 fi
 
 if [ "$platform" = "linux" ]; then
-	if [[ "$distro" = "Arch Linux" || "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" || "$distro" = "CachyOS Linux" ]]; then
+	if [[ "$distro" = "Arch Linux" ]]; then
 
 		for p_language in $p_languages; do
 			if [[ "$p_language" = *"Python"* ]]; then
