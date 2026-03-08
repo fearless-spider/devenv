@@ -550,7 +550,8 @@ if [ "$platform" = "linux" ]; then
 
 		for game in $games; do
 			if [[ "$game" = *"Tetris"* ]]; then
-				echo "Not supported"
+				sudo apt install -y bastet
+				recordInstall "Tetris" "bastet"
 			fi
 		done
 
@@ -688,7 +689,17 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
-				echo "Not supported"
+				sudo tee /etc/yum.repos.d/ngrok.repo > /dev/null <<'EOF'
+[ngrok]
+name=ngrok
+baseurl=https://ngrok-agent.s3.amazonaws.com/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://ngrok-agent.s3.amazonaws.com/ngrok.asc
+EOF
+				sudo dnf install -y ngrok
+				recordInstall "Ngrok" "ngrok"
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
@@ -717,7 +728,8 @@ if [ "$platform" = "linux" ]; then
 
 		for game in $games; do
 			if [[ "$game" = *"Tetris"* ]]; then
-				echo "Not supported"
+				sudo dnf install -y bastet
+				recordInstall "Tetris" "bastet"
 			fi
 		done
 
@@ -851,7 +863,11 @@ if [ "$platform" = "linux" ]; then
 			fi
 
 			if [[ "$tool" = *"Ngrok"* ]]; then
-				echo "Not supported"
+				sudo zypper ar -cfp 90 https://ngrok-agent.s3.amazonaws.com/ ngrok
+				sudo rpm --import https://ngrok-agent.s3.amazonaws.com/ngrok.asc
+				sudo zypper refresh
+				sudo zypper in -y ngrok
+				recordInstall "Ngrok" "ngrok"
 			fi
 
 			if [[ "$tool" = *"IRC"* ]]; then
@@ -880,7 +896,8 @@ if [ "$platform" = "linux" ]; then
 
 		for game in $games; do
 			if [[ "$game" = *"Tetris"* ]]; then
-				echo "Not supported"
+				sudo zypper in -y tint
+				recordInstall "Tetris" "tint"
 			fi
 		done
 	fi
