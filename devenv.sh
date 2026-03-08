@@ -10,7 +10,7 @@ echo "Games: Tetris, Snake"
 CI_MODE=false
 UNINSTALL_MODE=false
 
-for arg in "${@}"; do
+for arg in "$@"; do
   case "$arg" in
     --ci)         CI_MODE=true ;;
     --uninstall)  UNINSTALL_MODE=true ;;
